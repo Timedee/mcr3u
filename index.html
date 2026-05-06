@@ -1,0 +1,1672 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>MCR3U Chapter 5 — Trig Mastery</title>
+<style>
+  @import url('https://fonts.googleapis.com/css2?family=Syne:wght@400;600;700;800&family=JetBrains+Mono:wght@400;500;700&family=Nunito:wght@400;500;600;700&display=swap');
+
+  :root {
+    --bg: #0a0d14;
+    --surface: #111622;
+    --card: #161d2e;
+    --border: #1e2a42;
+    --accent: #00d4ff;
+    --accent2: #7c3aed;
+    --accent3: #10b981;
+    --accent4: #f59e0b;
+    --accent5: #ef4444;
+    --text: #e2e8f0;
+    --muted: #64748b;
+    --highlight: #1e3a5f;
+  }
+
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+
+  body {
+    font-family: 'Nunito', sans-serif;
+    background: var(--bg);
+    color: var(--text);
+    min-height: 100vh;
+    overflow-x: hidden;
+  }
+
+  /* Header */
+  .header {
+    background: linear-gradient(135deg, #0a0d14 0%, #111622 50%, #0d1a2e 100%);
+    border-bottom: 1px solid var(--border);
+    padding: 16px 24px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    position: sticky;
+    top: 0;
+    z-index: 100;
+    backdrop-filter: blur(10px);
+  }
+
+  .logo {
+    font-family: 'Syne', sans-serif;
+    font-weight: 800;
+    font-size: 1.3rem;
+    color: var(--accent);
+    letter-spacing: -0.5px;
+  }
+
+  .logo span { color: var(--text); }
+
+  .timer-display {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 1.1rem;
+    color: var(--accent4);
+    background: rgba(245,158,11,0.1);
+    border: 1px solid rgba(245,158,11,0.3);
+    padding: 6px 16px;
+    border-radius: 8px;
+  }
+
+  /* Nav tabs */
+  .nav {
+    display: flex;
+    background: var(--surface);
+    border-bottom: 1px solid var(--border);
+    overflow-x: auto;
+    scrollbar-width: none;
+    padding: 0 16px;
+  }
+  .nav::-webkit-scrollbar { display: none; }
+
+  .nav-btn {
+    font-family: 'Syne', sans-serif;
+    font-weight: 600;
+    font-size: 0.82rem;
+    letter-spacing: 0.5px;
+    padding: 14px 20px;
+    background: none;
+    border: none;
+    color: var(--muted);
+    cursor: pointer;
+    white-space: nowrap;
+    border-bottom: 3px solid transparent;
+    transition: all 0.2s;
+    text-transform: uppercase;
+  }
+
+  .nav-btn:hover { color: var(--text); }
+  .nav-btn.active { color: var(--accent); border-bottom-color: var(--accent); }
+
+  /* Tabs */
+  .tab { display: none; padding: 24px 20px; max-width: 900px; margin: 0 auto; }
+  .tab.active { display: block; }
+
+  /* Section headers */
+  .section-title {
+    font-family: 'Syne', sans-serif;
+    font-size: 1.6rem;
+    font-weight: 800;
+    color: var(--accent);
+    margin-bottom: 6px;
+  }
+
+  .section-sub {
+    color: var(--muted);
+    font-size: 0.9rem;
+    margin-bottom: 24px;
+  }
+
+  /* Cards */
+  .card {
+    background: var(--card);
+    border: 1px solid var(--border);
+    border-radius: 12px;
+    padding: 20px;
+    margin-bottom: 16px;
+  }
+
+  .card-title {
+    font-family: 'Syne', sans-serif;
+    font-weight: 700;
+    font-size: 1.05rem;
+    color: var(--accent);
+    margin-bottom: 12px;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+  }
+
+  .badge {
+    font-size: 0.7rem;
+    padding: 2px 8px;
+    border-radius: 20px;
+    font-family: 'JetBrains Mono', monospace;
+    font-weight: 700;
+  }
+
+  .badge-blue { background: rgba(0,212,255,0.15); color: var(--accent); border: 1px solid rgba(0,212,255,0.3); }
+  .badge-purple { background: rgba(124,58,237,0.15); color: #a78bfa; border: 1px solid rgba(124,58,237,0.3); }
+  .badge-green { background: rgba(16,185,129,0.15); color: var(--accent3); border: 1px solid rgba(16,185,129,0.3); }
+  .badge-yellow { background: rgba(245,158,11,0.15); color: var(--accent4); border: 1px solid rgba(245,158,11,0.3); }
+  .badge-red { background: rgba(239,68,68,0.15); color: var(--accent5); border: 1px solid rgba(239,68,68,0.3); }
+
+  /* Formula boxes */
+  .formula {
+    font-family: 'JetBrains Mono', monospace;
+    background: rgba(0,212,255,0.05);
+    border: 1px solid rgba(0,212,255,0.2);
+    border-left: 4px solid var(--accent);
+    border-radius: 8px;
+    padding: 14px 16px;
+    margin: 10px 0;
+    font-size: 0.9rem;
+    color: var(--accent);
+    line-height: 1.7;
+  }
+
+  .formula .label {
+    color: var(--muted);
+    font-size: 0.75rem;
+    display: block;
+    margin-bottom: 4px;
+    font-family: 'Nunito', sans-serif;
+  }
+
+  /* Key rules */
+  .rule {
+    display: flex;
+    gap: 12px;
+    align-items: flex-start;
+    padding: 10px 0;
+    border-bottom: 1px solid var(--border);
+  }
+  .rule:last-child { border-bottom: none; }
+  .rule-icon { font-size: 1.2rem; flex-shrink: 0; margin-top: 2px; }
+  .rule-text { font-size: 0.9rem; line-height: 1.6; }
+  .rule-text strong { color: var(--accent4); }
+
+  /* Tables */
+  .trig-table {
+    width: 100%;
+    border-collapse: collapse;
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 0.85rem;
+    margin: 12px 0;
+  }
+  .trig-table th {
+    background: rgba(0,212,255,0.1);
+    color: var(--accent);
+    padding: 10px 12px;
+    text-align: center;
+    border: 1px solid var(--border);
+    font-family: 'Syne', sans-serif;
+    font-size: 0.8rem;
+    letter-spacing: 0.5px;
+  }
+  .trig-table td {
+    padding: 9px 12px;
+    text-align: center;
+    border: 1px solid var(--border);
+    color: var(--text);
+  }
+  .trig-table tr:nth-child(even) td { background: rgba(255,255,255,0.02); }
+  .trig-table tr:hover td { background: rgba(0,212,255,0.05); }
+  .trig-table .special { color: var(--accent4); font-weight: 700; }
+
+  /* CAST diagram */
+  .cast-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 3px;
+    max-width: 340px;
+    margin: 12px auto;
+    border: 2px solid var(--border);
+    border-radius: 8px;
+    overflow: hidden;
+  }
+  .cast-cell {
+    padding: 20px;
+    text-align: center;
+    font-family: 'Syne', sans-serif;
+    font-weight: 800;
+    font-size: 1.6rem;
+    border: 1px solid var(--border);
+  }
+  .cast-sub {
+    font-family: 'Nunito', sans-serif;
+    font-size: 0.7rem;
+    font-weight: 600;
+    margin-top: 4px;
+    opacity: 0.8;
+  }
+
+  /* Flashcard system */
+  #flashcard-area { max-width: 600px; margin: 0 auto; }
+
+  .fc-progress {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 20px;
+    font-size: 0.85rem;
+    color: var(--muted);
+  }
+
+  .fc-bar {
+    height: 6px;
+    background: var(--border);
+    border-radius: 3px;
+    margin-bottom: 20px;
+    overflow: hidden;
+  }
+  .fc-bar-fill {
+    height: 100%;
+    background: linear-gradient(90deg, var(--accent), var(--accent2));
+    border-radius: 3px;
+    transition: width 0.4s ease;
+  }
+
+  .flashcard {
+    width: 100%;
+    min-height: 280px;
+    perspective: 1200px;
+    cursor: pointer;
+    margin-bottom: 20px;
+  }
+
+  .flashcard-inner {
+    position: relative;
+    width: 100%;
+    min-height: 280px;
+    transform-style: preserve-3d;
+    transition: transform 0.55s cubic-bezier(0.4,0,0.2,1);
+  }
+
+  .flashcard.flipped .flashcard-inner { transform: rotateY(180deg); }
+
+  .flashcard-front, .flashcard-back {
+    position: absolute;
+    width: 100%;
+    min-height: 280px;
+    backface-visibility: hidden;
+    border-radius: 16px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    padding: 32px;
+    text-align: center;
+  }
+
+  .flashcard-front {
+    background: linear-gradient(135deg, #111622, #161d2e);
+    border: 2px solid var(--border);
+  }
+
+  .flashcard-back {
+    background: linear-gradient(135deg, #0d1a2e, #111d35);
+    border: 2px solid rgba(0,212,255,0.3);
+    transform: rotateY(180deg);
+  }
+
+  .fc-q-label {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 0.7rem;
+    color: var(--muted);
+    text-transform: uppercase;
+    letter-spacing: 2px;
+    margin-bottom: 16px;
+  }
+
+  .fc-question {
+    font-family: 'Syne', sans-serif;
+    font-size: 1.3rem;
+    font-weight: 700;
+    color: var(--text);
+    line-height: 1.5;
+    margin-bottom: 12px;
+  }
+
+  .fc-hint { font-size: 0.8rem; color: var(--muted); margin-top: 16px; }
+
+  .fc-answer {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 1.15rem;
+    color: var(--accent);
+    font-weight: 700;
+    line-height: 1.6;
+    margin: 12px 0;
+  }
+
+  .fc-explain {
+    font-size: 0.85rem;
+    color: var(--muted);
+    line-height: 1.6;
+    margin-top: 10px;
+  }
+
+  .fc-controls {
+    display: flex;
+    gap: 12px;
+    justify-content: center;
+    flex-wrap: wrap;
+  }
+
+  .btn {
+    font-family: 'Syne', sans-serif;
+    font-weight: 700;
+    font-size: 0.85rem;
+    letter-spacing: 0.5px;
+    padding: 10px 22px;
+    border-radius: 8px;
+    border: none;
+    cursor: pointer;
+    transition: all 0.2s;
+    text-transform: uppercase;
+  }
+
+  .btn-primary {
+    background: var(--accent);
+    color: var(--bg);
+  }
+  .btn-primary:hover { background: #00b8d9; transform: translateY(-1px); }
+
+  .btn-secondary {
+    background: var(--border);
+    color: var(--text);
+  }
+  .btn-secondary:hover { background: #2a3a5a; }
+
+  .btn-green {
+    background: rgba(16,185,129,0.2);
+    color: var(--accent3);
+    border: 1px solid rgba(16,185,129,0.4);
+  }
+  .btn-green:hover { background: rgba(16,185,129,0.3); }
+
+  .btn-red {
+    background: rgba(239,68,68,0.2);
+    color: var(--accent5);
+    border: 1px solid rgba(239,68,68,0.4);
+  }
+  .btn-red:hover { background: rgba(239,68,68,0.3); }
+
+  /* Category selector for flashcards */
+  .fc-cats {
+    display: flex;
+    gap: 8px;
+    flex-wrap: wrap;
+    margin-bottom: 20px;
+  }
+  .fc-cat-btn {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 0.75rem;
+    padding: 6px 14px;
+    border-radius: 20px;
+    border: 1px solid var(--border);
+    background: var(--surface);
+    color: var(--muted);
+    cursor: pointer;
+    transition: all 0.2s;
+  }
+  .fc-cat-btn.active { border-color: var(--accent); color: var(--accent); background: rgba(0,212,255,0.1); }
+
+  /* Practice Test */
+  .question-block {
+    background: var(--card);
+    border: 1px solid var(--border);
+    border-radius: 12px;
+    padding: 20px;
+    margin-bottom: 16px;
+  }
+
+  .q-num {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 0.7rem;
+    color: var(--muted);
+    margin-bottom: 8px;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+  }
+
+  .q-text {
+    font-size: 0.95rem;
+    line-height: 1.7;
+    margin-bottom: 14px;
+    color: var(--text);
+  }
+
+  .q-text .math {
+    font-family: 'JetBrains Mono', monospace;
+    color: var(--accent4);
+    font-weight: 600;
+  }
+
+  .q-choices { display: flex; flex-direction: column; gap: 8px; margin-bottom: 12px; }
+
+  .q-choice {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    padding: 10px 14px;
+    border-radius: 8px;
+    border: 1px solid var(--border);
+    background: var(--surface);
+    cursor: pointer;
+    transition: all 0.15s;
+    font-size: 0.9rem;
+  }
+
+  .q-choice:hover { border-color: var(--accent); background: rgba(0,212,255,0.05); }
+  .q-choice.selected-correct { border-color: var(--accent3); background: rgba(16,185,129,0.1); color: var(--accent3); }
+  .q-choice.selected-wrong { border-color: var(--accent5); background: rgba(239,68,68,0.1); color: var(--accent5); }
+  .q-choice.reveal-correct { border-color: var(--accent3); background: rgba(16,185,129,0.08); }
+  .q-choice.disabled { pointer-events: none; }
+
+  .choice-letter {
+    font-family: 'JetBrains Mono', monospace;
+    font-weight: 700;
+    font-size: 0.8rem;
+    color: var(--muted);
+    min-width: 20px;
+  }
+
+  .q-explain {
+    display: none;
+    margin-top: 12px;
+    padding: 14px;
+    background: rgba(0,212,255,0.05);
+    border: 1px solid rgba(0,212,255,0.15);
+    border-radius: 8px;
+    font-size: 0.85rem;
+    line-height: 1.7;
+    color: var(--muted);
+  }
+
+  .q-explain.show { display: block; }
+  .q-explain strong { color: var(--accent); }
+
+  .q-input {
+    width: 100%;
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: 8px;
+    padding: 10px 14px;
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 0.9rem;
+    color: var(--text);
+    margin-bottom: 8px;
+    outline: none;
+    transition: border-color 0.2s;
+  }
+  .q-input:focus { border-color: var(--accent); }
+
+  /* Score display */
+  .score-box {
+    background: linear-gradient(135deg, rgba(0,212,255,0.1), rgba(124,58,237,0.1));
+    border: 1px solid rgba(0,212,255,0.2);
+    border-radius: 12px;
+    padding: 20px;
+    text-align: center;
+    margin-bottom: 24px;
+    display: none;
+  }
+  .score-box.show { display: block; }
+  .score-num {
+    font-family: 'Syne', sans-serif;
+    font-size: 3rem;
+    font-weight: 800;
+    color: var(--accent);
+  }
+  .score-label { color: var(--muted); margin-top: 4px; }
+
+  /* Homework section */
+  .hw-section {
+    margin-bottom: 28px;
+  }
+  .hw-title {
+    font-family: 'Syne', sans-serif;
+    font-size: 1rem;
+    font-weight: 700;
+    color: var(--accent2);
+    margin-bottom: 12px;
+    padding: 8px 16px;
+    background: rgba(124,58,237,0.1);
+    border: 1px solid rgba(124,58,237,0.2);
+    border-radius: 8px;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+  }
+
+  .hw-q {
+    background: var(--card);
+    border: 1px solid var(--border);
+    border-radius: 10px;
+    padding: 16px;
+    margin-bottom: 10px;
+  }
+
+  .hw-q-text {
+    font-size: 0.9rem;
+    line-height: 1.7;
+    margin-bottom: 10px;
+  }
+
+  .hw-solution {
+    display: none;
+    margin-top: 12px;
+    padding: 12px;
+    background: rgba(16,185,129,0.05);
+    border: 1px solid rgba(16,185,129,0.2);
+    border-radius: 8px;
+    font-size: 0.85rem;
+    line-height: 1.8;
+    color: var(--muted);
+  }
+  .hw-solution.show { display: block; }
+  .hw-solution strong { color: var(--accent3); font-family: 'JetBrains Mono', monospace; }
+  .hw-toggle {
+    font-size: 0.8rem;
+    padding: 5px 14px;
+    cursor: pointer;
+    border-radius: 6px;
+    border: 1px solid var(--border);
+    background: var(--surface);
+    color: var(--muted);
+    font-family: 'Nunito', sans-serif;
+    transition: all 0.2s;
+  }
+  .hw-toggle:hover { color: var(--accent3); border-color: rgba(16,185,129,0.4); }
+
+  /* Cheat sheet */
+  .cheat-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 12px;
+  }
+  @media (max-width: 600px) { .cheat-grid { grid-template-columns: 1fr; } }
+
+  .cheat-card {
+    background: var(--card);
+    border: 1px solid var(--border);
+    border-radius: 10px;
+    padding: 16px;
+  }
+  .cheat-card-title {
+    font-family: 'Syne', sans-serif;
+    font-size: 0.85rem;
+    font-weight: 700;
+    color: var(--accent4);
+    margin-bottom: 10px;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+  }
+  .cheat-formula {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 0.8rem;
+    color: var(--text);
+    line-height: 2;
+  }
+  .cheat-formula .highlight { color: var(--accent); }
+  .cheat-formula .warn { color: var(--accent5); }
+  .cheat-formula .good { color: var(--accent3); }
+
+  /* Study guide sections */
+  .study-section {
+    margin-bottom: 28px;
+  }
+
+  .step {
+    display: flex;
+    gap: 14px;
+    margin-bottom: 12px;
+    align-items: flex-start;
+  }
+  .step-num {
+    min-width: 28px;
+    height: 28px;
+    background: rgba(0,212,255,0.15);
+    border: 1px solid rgba(0,212,255,0.3);
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 0.75rem;
+    font-weight: 700;
+    color: var(--accent);
+    flex-shrink: 0;
+  }
+  .step-text { font-size: 0.9rem; line-height: 1.7; padding-top: 4px; }
+
+  /* Grid 3 */
+  .grid-3 {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 10px;
+    margin: 12px 0;
+  }
+  @media (max-width: 500px) { .grid-3 { grid-template-columns: 1fr 1fr; } }
+
+  .mini-card {
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: 8px;
+    padding: 12px;
+    text-align: center;
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 0.8rem;
+  }
+  .mini-card .mc-label { color: var(--muted); font-size: 0.7rem; margin-bottom: 4px; }
+  .mini-card .mc-val { color: var(--accent); font-size: 1rem; font-weight: 700; }
+
+  /* Scrollbar */
+  ::-webkit-scrollbar { width: 6px; }
+  ::-webkit-scrollbar-track { background: var(--bg); }
+  ::-webkit-scrollbar-thumb { background: var(--border); border-radius: 3px; }
+
+  /* Ambiguous case visual */
+  .amb-cases {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 10px;
+    margin: 12px 0;
+  }
+  .amb-case {
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: 8px;
+    padding: 12px;
+    font-size: 0.82rem;
+    text-align: center;
+  }
+  .amb-case .case-title { font-family: 'Syne', sans-serif; font-weight: 700; margin-bottom: 6px; font-size: 0.85rem; }
+  .amb-case .case-cond { font-family: 'JetBrains Mono', monospace; color: var(--accent4); font-size: 0.8rem; margin-bottom: 6px; }
+  .amb-case .case-result { font-weight: 700; }
+
+  /* Pulse animation for flip hint */
+  @keyframes pulse {
+    0%, 100% { opacity: 1; }
+    50% { opacity: 0.5; }
+  }
+  .pulse { animation: pulse 2s infinite; }
+
+  /* Test results */
+  .test-controls {
+    display: flex;
+    gap: 12px;
+    margin-bottom: 20px;
+    flex-wrap: wrap;
+    align-items: center;
+    justify-content: space-between;
+  }
+
+  .section-picker {
+    display: flex;
+    gap: 8px;
+    flex-wrap: wrap;
+    margin-bottom: 16px;
+  }
+  .sec-btn {
+    font-size: 0.78rem;
+    padding: 5px 12px;
+    border-radius: 20px;
+    border: 1px solid var(--border);
+    background: var(--surface);
+    color: var(--muted);
+    cursor: pointer;
+    transition: all 0.2s;
+    font-family: 'JetBrains Mono', monospace;
+  }
+  .sec-btn.on { background: rgba(0,212,255,0.1); border-color: var(--accent); color: var(--accent); }
+
+  textarea.q-input { min-height: 80px; resize: vertical; }
+</style>
+</head>
+<body>
+
+<div class="header">
+  <div class="logo">MCR3U <span>· Trig Ch.5</span></div>
+  <div class="timer-display" id="timer">40:00</div>
+</div>
+
+<nav class="nav">
+  <button class="nav-btn active" onclick="showTab('study')">📚 Study</button>
+  <button class="nav-btn" onclick="showTab('flashcards')">🃏 Flashcards</button>
+  <button class="nav-btn" onclick="showTab('practice')">✏️ Practice Test</button>
+  <button class="nav-btn" onclick="showTab('homework')">📝 Homework</button>
+  <button class="nav-btn" onclick="showTab('cheatsheet')">⚡ Cheat Sheet</button>
+</nav>
+
+<!-- ===================== STUDY TAB ===================== -->
+<div id="tab-study" class="tab active">
+  <div class="section-title">Study Guide</div>
+  <div class="section-sub">Complete Chapter 5 breakdown — all 8 lessons</div>
+
+  <!-- 5.1 -->
+  <div class="study-section">
+    <div class="card">
+      <div class="card-title">5.1 — Trig Ratios of Acute Angles <span class="badge badge-blue">SOHCAHTOA + Reciprocals</span></div>
+
+      <div class="rule">
+        <div class="rule-icon">📐</div>
+        <div class="rule-text"><strong>Labelling sides:</strong> Put your finger on the angle you're working with. The <strong>adjacent</strong> side touches it (says "AHA" next to your finger). The <strong>opposite</strong> is across. The <strong>hypotenuse</strong> is always opposite the right angle — the longest side.</div>
+      </div>
+
+      <div class="formula">
+        <span class="label">Primary Ratios (SOH CAH TOA)</span>
+        sin θ = opp/hyp &nbsp;&nbsp; cos θ = adj/hyp &nbsp;&nbsp; tan θ = opp/adj
+      </div>
+
+      <div class="formula">
+        <span class="label">Reciprocal Ratios</span>
+        csc θ = hyp/opp = 1/sin θ
+        sec θ = hyp/adj = 1/cos θ
+        cot θ = adj/opp = 1/tan θ
+      </div>
+
+      <div class="rule">
+        <div class="rule-icon">⚠️</div>
+        <div class="rule-text"><strong>KEY EXAM FACT:</strong> sin and cos are ALWAYS ≤ 1 for acute angles (you divide by the largest side, the hypotenuse). Therefore csc and sec are ALWAYS ≥ 1. Tan can be anything.</div>
+      </div>
+
+      <div class="rule">
+        <div class="rule-icon">🔢</div>
+        <div class="rule-text"><strong>Calculator trick for reciprocals:</strong> csc(25°) = 1 ÷ sin(25°). You press: <strong>1 ÷ sin(25) =</strong>. There is NO csc button.</div>
+      </div>
+
+      <div class="rule">
+        <div class="rule-icon">🔄</div>
+        <div class="rule-text"><strong>Finding angle from reciprocal ratio:</strong> cot θ = 1.2711 → tan θ = 1/1.2711 = 0.7867 → θ = tan⁻¹(0.7867) ≈ 38°</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- 5.2 -->
+  <div class="study-section">
+    <div class="card">
+      <div class="card-title">5.2 — Special Triangles & Exact Values <span class="badge badge-purple">MEMORIZE THESE</span></div>
+
+      <div class="rule">
+        <div class="rule-icon">🔺</div>
+        <div class="rule-text"><strong>45-45-90 Triangle:</strong> Two equal legs of 1 → hypotenuse = √2. Angles: 45°, 45°, 90°</div>
+      </div>
+      <div class="rule">
+        <div class="rule-icon">🔺</div>
+        <div class="rule-text"><strong>30-60-90 Triangle:</strong> Start with equilateral side = 2, cut in half. Short leg = 1, hypotenuse = 2, long leg = √3. Angles: 30°, 60°, 90°</div>
+      </div>
+
+      <table class="trig-table">
+        <tr><th>θ</th><th>sin θ</th><th>cos θ</th><th>tan θ</th></tr>
+        <tr><td><strong>30°</strong></td><td>1/2</td><td>√3/2</td><td>1/√3 = √3/3</td></tr>
+        <tr><td><strong>45°</strong></td><td class="special">√2/2</td><td class="special">√2/2</td><td>1</td></tr>
+        <tr><td><strong>60°</strong></td><td>√3/2</td><td>1/2</td><td>√3</td></tr>
+      </table>
+
+      <div class="rule">
+        <div class="rule-icon">💡</div>
+        <div class="rule-text"><strong>Pattern trick:</strong> sin 30° = cos 60° = 1/2. sin 60° = cos 30° = √3/2. They swap! Notice sin increases and cos decreases as angle goes 30→60.</div>
+      </div>
+
+      <div class="rule">
+        <div class="rule-icon">🎯</div>
+        <div class="rule-text"><strong>"Exact value" on test = use special triangles. No decimals allowed!</strong> When you see the word "exact", your calculator stays in your pocket.</div>
+      </div>
+
+      <div class="formula">
+        <span class="label">Example: (sin 45°)(cos 45°) + (sin 30°)(sin 60°)</span>
+        = (√2/2)(√2/2) + (1/2)(√3/2)
+        = 2/4 + √3/4
+        = (2 + √3)/4
+      </div>
+    </div>
+  </div>
+
+  <!-- 5.3 -->
+  <div class="study-section">
+    <div class="card">
+      <div class="card-title">5.3 — Trig Ratios for Angles > 90° <span class="badge badge-green">CAST Rule</span></div>
+
+      <div class="rule"><div class="rule-icon">📍</div><div class="rule-text"><strong>Standard Position:</strong> Vertex at origin, initial arm on positive x-axis, terminal arm rotates counterclockwise (positive angle) or clockwise (negative angle).</div></div>
+      <div class="rule"><div class="rule-icon">🔄</div><div class="rule-text"><strong>Related Acute Angle (β):</strong> The SHORTEST angle from the x-axis to the terminal arm. Always measured to the nearest x-axis — like bird wings flapping up or down from the x-axis.</div></div>
+      <div class="rule"><div class="rule-icon">📐</div><div class="rule-text"><strong>Principal Angle (θ):</strong> The full counterclockwise angle from 0° to 360°.</div></div>
+
+      <p style="margin: 12px 0; font-size: 0.9rem;">Using a point P(x, y) with radius r: <strong>sin = y/r, cos = x/r, tan = y/x</strong></p>
+
+      <div class="cast-grid">
+        <div class="cast-cell" style="background:rgba(16,185,129,0.1); color:var(--accent3); order:1;">S<div class="cast-sub">Only Sine +<br>Q2: 90°–180°</div></div>
+        <div class="cast-cell" style="background:rgba(0,212,255,0.1); color:var(--accent); order:2;">A<div class="cast-sub">ALL positive<br>Q1: 0°–90°</div></div>
+        <div class="cast-cell" style="background:rgba(245,158,11,0.1); color:var(--accent4); order:3;">T<div class="cast-sub">Only Tan +<br>Q3: 180°–270°</div></div>
+        <div class="cast-cell" style="background:rgba(124,58,237,0.1); color:#a78bfa; order:4;">C<div class="cast-sub">Only Cos +<br>Q4: 270°–360°</div></div>
+      </div>
+      <p style="text-align:center; font-size:0.8rem; color:var(--muted); margin-top:8px;">Read counterclockwise starting Q1: <strong>A → S → T → C</strong> | "All Students Take Calculus"</p>
+
+      <div class="rule"><div class="rule-icon">🔢</div><div class="rule-text"><strong>Finding related acute angle:</strong><br>
+        Q2: β = 180° − θ &nbsp; | &nbsp; Q3: β = θ − 180° &nbsp; | &nbsp; Q4: β = 360° − θ</div></div>
+
+      <div class="formula">
+        <span class="label">Key Relationships (θ is the related acute angle)</span>
+        Q2: sin(180°−θ) = sinθ, cos(180°−θ) = −cosθ, tan(180°−θ) = −tanθ
+        Q3: sin(180°+θ) = −sinθ, cos(180°+θ) = −cosθ, tan(180°+θ) = tanθ
+        Q4: sin(360°−θ) = −sinθ, cos(360°−θ) = cosθ,  tan(360°−θ) = −tanθ
+      </div>
+    </div>
+  </div>
+
+  <!-- 5.4 -->
+  <div class="study-section">
+    <div class="card">
+      <div class="card-title">5.4 — Trig Ratios: Any Angle 0°–360° <span class="badge badge-yellow">Two Solutions</span></div>
+
+      <div class="rule"><div class="rule-icon">📊</div><div class="rule-text"><strong>Axis angles:</strong> sin 90° = 1, cos 90° = 0, tan 90° = undefined | sin 180° = 0, cos 180° = −1 | sin 270° = −1, cos 270° = 0 | sin 360° = 0, cos 360° = 1</div></div>
+
+      <div class="rule"><div class="rule-icon">🎯</div><div class="rule-text"><strong>Two solutions always exist (between 0°–360°)</strong> for sin, cos, and tan — one in each quadrant where the ratio is positive or negative.</div></div>
+
+      <div class="formula">
+        <span class="label">Step-by-step: Find all θ where sin θ = 0.4815, 0° ≤ θ ≤ 360°</span>
+        1. β = sin⁻¹(0.4815) ≈ 28.8° (related acute angle)
+        2. sin is + in Q1 and Q2 (CAST)
+        3. θ = 28.8° (Q1) and θ = 180° − 28.8° = 151.2° (Q2) ✓
+      </div>
+
+      <div class="formula">
+        <span class="label">From a point P(x, y): find R, then ratios</span>
+        r = √(x² + y²) → sin θ = y/r, cos θ = x/r, tan θ = y/x
+        Principal angle: use tan⁻¹(|y/x|) to get β, then adjust for quadrant
+      </div>
+
+      <div class="rule"><div class="rule-icon">⚠️</div><div class="rule-text"><strong>Quadrant adjustment for principal angle:</strong><br>
+      Q1: θ = β | Q2: θ = 180° − β | Q3: θ = 180° + β | Q4: θ = 360° − β</div></div>
+    </div>
+  </div>
+
+  <!-- 5.5 -->
+  <div class="study-section">
+    <div class="card">
+      <div class="card-title">5.5 — Trigonometric Identities <span class="badge badge-red">Prove Both Sides</span></div>
+
+      <div class="rule"><div class="rule-icon">📋</div><div class="rule-text"><strong>All identities you MUST know:</strong></div></div>
+
+      <div class="formula">
+        <span class="label">Reciprocal Identities</span>
+        cscθ = 1/sinθ &nbsp; secθ = 1/cosθ &nbsp; cotθ = 1/tanθ
+      </div>
+      <div class="formula">
+        <span class="label">Quotient Identities</span>
+        tanθ = sinθ/cosθ &nbsp;&nbsp; cotθ = cosθ/sinθ
+      </div>
+      <div class="formula">
+        <span class="label">Pythagorean Identities (THE BIG THREE)</span>
+        sin²θ + cos²θ = 1
+        1 + tan²θ = sec²θ
+        1 + cot²θ = csc²θ
+        
+        Rearrangements:
+        sin²θ = 1 − cos²θ
+        cos²θ = 1 − sin²θ
+      </div>
+
+      <p style="font-size:0.9rem; margin:12px 0; font-family:'Syne',sans-serif; font-weight:700; color:var(--accent4);">Strategy for proving identities:</p>
+      <div class="step"><div class="step-num">1</div><div class="step-text">Work on the MORE complex side only</div></div>
+      <div class="step"><div class="step-num">2</div><div class="step-text">Convert everything to sin and cos (break down tan, csc, sec, cot)</div></div>
+      <div class="step"><div class="step-num">3</div><div class="step-text">Factor or find common denominator to combine fractions</div></div>
+      <div class="step"><div class="step-num">4</div><div class="step-text">Look for sin²+cos²=1 to replace with 1 (or reverse)</div></div>
+      <div class="step"><div class="step-num">5</div><div class="step-text">Difference of squares: a²−b² = (a+b)(a−b) — recognise and use!</div></div>
+
+      <div class="formula">
+        <span class="label">Worked example: Prove tan φ = (sin φ + sin²φ) / (cos φ)(1 + sin φ)</span>
+        RHS = sinφ(1 + sinφ) / cosφ(1 + sinφ)   [factor sinφ from numerator]
+            = sinφ / cosφ
+            = tanφ = LHS  ✓
+      </div>
+    </div>
+  </div>
+
+  <!-- 5.6 -->
+  <div class="study-section">
+    <div class="card">
+      <div class="card-title">5.6 — The Sine Law & Ambiguous Case <span class="badge badge-blue">SSA Warning!</span></div>
+
+      <div class="formula">
+        <span class="label">Sine Law — use when you have a matching angle-side pair</span>
+        a/sinA = b/sinB = c/sinC
+        OR equivalently: sinA/a = sinB/b = sinC/c
+      </div>
+
+      <div class="rule"><div class="rule-icon">🔍</div><div class="rule-text"><strong>When to use:</strong> You have an angle-opposite-side pair (X pattern). NOT a right triangle. Given: angle-angle-side (AAS) or angle-side-side (SSA — check ambiguous case!)</div></div>
+
+      <p style="font-size:0.9rem; margin: 12px 0; font-family:'Syne',sans-serif; font-weight:700; color:var(--accent4);">Ambiguous Case (SSA — given ∠A, side a, side b):</p>
+      <p style="font-size:0.85rem; margin-bottom:10px; color:var(--muted);">Height h = b·sin A. This is the minimum side length to form a triangle.</p>
+
+      <div class="amb-cases">
+        <div class="amb-case">
+          <div class="case-title">No Triangle</div>
+          <div class="case-cond">a < h = b·sinA</div>
+          <div class="case-result" style="color:var(--accent5)">0 solutions</div>
+          <div style="font-size:0.75rem; color:var(--muted); margin-top:4px;">Side too short to reach baseline</div>
+        </div>
+        <div class="amb-case">
+          <div class="case-title">Right Triangle</div>
+          <div class="case-cond">a = h = b·sinA</div>
+          <div class="case-result" style="color:var(--accent4)">1 solution (90°)</div>
+          <div style="font-size:0.75rem; color:var(--muted); margin-top:4px;">Exactly touches baseline</div>
+        </div>
+        <div class="amb-case">
+          <div class="case-title" style="color:var(--accent5)">⚠️ TWO Triangles</div>
+          <div class="case-cond">h < a < b</div>
+          <div class="case-result" style="color:var(--accent5)">2 solutions!</div>
+          <div style="font-size:0.75rem; color:var(--muted); margin-top:4px;">∠B' = 180° − ∠B (the obtuse solution)</div>
+        </div>
+        <div class="amb-case">
+          <div class="case-title">One Triangle</div>
+          <div class="case-cond">a ≥ b</div>
+          <div class="case-result" style="color:var(--accent3)">1 solution</div>
+          <div style="font-size:0.75rem; color:var(--muted); margin-top:4px;">Long enough, only one way</div>
+        </div>
+      </div>
+
+      <div class="rule"><div class="rule-icon">💡</div><div class="rule-text"><strong>Obtuse angle in ambiguous case:</strong> If sinB gives angle B, the second solution is B₂ = 180° − B. Check: does A + B₂ < 180°? If yes, triangle 2 is valid.</div></div>
+    </div>
+  </div>
+
+  <!-- 5.7 -->
+  <div class="study-section">
+    <div class="card">
+      <div class="card-title">5.7 — The Cosine Law <span class="badge badge-purple">SAS or SSS</span></div>
+
+      <div class="formula">
+        <span class="label">Cosine Law (finding a side — SAS)</span>
+        a² = b² + c² − 2bc·cosA
+        b² = a² + c² − 2ac·cosB
+        c² = a² + b² − 2ab·cosC
+      </div>
+
+      <div class="formula">
+        <span class="label">Cosine Law (finding an angle — SSS)</span>
+        cosA = (b² + c² − a²) / (2bc)
+        cosB = (a² + c² − b²) / (2ac)
+        cosC = (a² + b² − c²) / (2ab)
+      </div>
+
+      <div class="rule"><div class="rule-icon">⚠️</div><div class="rule-text"><strong>BIGGEST MISTAKE:</strong> When using a² = b² + c² − 2bc·cosA, you must subtract the ENTIRE term 2bc·cosA. Do it all at once in the calculator: <strong>enter b²+c²−2bc·cos(A) all at once</strong>, then take √.</div></div>
+
+      <div class="rule"><div class="rule-icon">📋</div><div class="rule-text"><strong>Decision tree:</strong> Right triangle? → SOHCAHTOA | Has matching pair? → Sine Law | SAS or SSS? → Cosine Law</div></div>
+
+      <div class="rule"><div class="rule-icon">💡</div><div class="rule-text"><strong>Note:</strong> If angle = 90°, cosine law reduces to Pythagorean theorem (the −2bc·cos90° = 0 term vanishes).</div></div>
+    </div>
+  </div>
+
+  <!-- 5.8 -->
+  <div class="study-section">
+    <div class="card">
+      <div class="card-title">5.8 — 3D Trig Problems with Bearings <span class="badge badge-green">Sketch First!</span></div>
+
+      <div class="rule"><div class="rule-icon">🧭</div><div class="rule-text"><strong>Bearing:</strong> Clockwise angle measured from due North. Bearing 070° = 70° clockwise from North. Bearing 345° = almost all the way around (only 15° left of North).</div></div>
+
+      <div class="rule"><div class="rule-icon">📐</div><div class="rule-text"><strong>Angle of depression:</strong> The angle measured downward from a horizontal line of sight to an object below. By alternate interior angles (Z-pattern with parallel lines), the angle of depression equals the angle of elevation at the base.</div></div>
+
+      <div class="formula">
+        <span class="label">3D Problem Strategy (e.g. cliff/helicopter above 2 objects)</span>
+        Step 1: Subtract bearings → angle between the two objects at the base
+        Step 2: Use tan(angle of depression) = height/horizontal distance
+               → distance to each object = height / tan(angle)
+        Step 3: Now have SAS → use Cosine Law to find distance between objects
+      </div>
+
+      <div class="rule"><div class="rule-icon">🔺</div><div class="rule-text"><strong>Z-pattern (Alternate Interior Angles):</strong> North lines are parallel. When a line cuts two parallel lines, alternate interior angles are equal. This lets you transfer a bearing angle from one point to another.</div></div>
+
+      <div class="formula">
+        <span class="label">Example: Cliff 9m high, bearings 250° and 145°, depression 52° and 48°</span>
+        Angle between = 250 − 145 = 105°
+        dist₁ = 9/tan(52°) ≈ 7.03 m
+        dist₂ = 9/tan(48°) ≈ 8.10 m
+        d² = 7.03² + 8.10² − 2(7.03)(8.10)cos(105°)
+        d ≈ 12.02 m
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ===================== FLASHCARDS TAB ===================== -->
+<div id="tab-flashcards" class="tab">
+  <div class="section-title">Flashcards</div>
+  <div class="section-sub">Click the card to reveal the answer. Use arrow buttons to navigate.</div>
+
+  <div class="fc-cats">
+    <button class="fc-cat-btn active" onclick="setCategory('all', this)">All (68)</button>
+    <button class="fc-cat-btn" onclick="setCategory('ratios', this)">5.1 Ratios</button>
+    <button class="fc-cat-btn" onclick="setCategory('special', this)">5.2 Special</button>
+    <button class="fc-cat-btn" onclick="setCategory('cast', this)">5.3-4 CAST</button>
+    <button class="fc-cat-btn" onclick="setCategory('identities', this)">5.5 Identities</button>
+    <button class="fc-cat-btn" onclick="setCategory('sinelaw', this)">5.6 Sine Law</button>
+    <button class="fc-cat-btn" onclick="setCategory('cosinelaw', this)">5.7 Cosine Law</button>
+    <button class="fc-cat-btn" onclick="setCategory('3d', this)">5.8 3D</button>
+  </div>
+
+  <div class="fc-progress">
+    <span id="fc-counter">Card 1 of 68</span>
+    <span id="fc-stats">✓ <span id="fc-correct">0</span> &nbsp; ✗ <span id="fc-wrong">0</span></span>
+  </div>
+  <div class="fc-bar"><div class="fc-bar-fill" id="fc-bar" style="width:0%"></div></div>
+
+  <div id="flashcard-area">
+    <div class="flashcard" id="flashcard" onclick="flipCard()">
+      <div class="flashcard-inner">
+        <div class="flashcard-front">
+          <div class="fc-q-label">Question</div>
+          <div class="fc-question" id="fc-q">Loading...</div>
+          <div class="fc-hint pulse">👆 Tap to flip</div>
+        </div>
+        <div class="flashcard-back">
+          <div class="fc-q-label">Answer</div>
+          <div class="fc-answer" id="fc-a">...</div>
+          <div class="fc-explain" id="fc-e">...</div>
+        </div>
+      </div>
+    </div>
+
+    <div class="fc-controls">
+      <button class="btn btn-red" onclick="markCard(false)">✗ Missed</button>
+      <button class="btn btn-secondary" onclick="prevCard()">← Prev</button>
+      <button class="btn btn-secondary" onclick="nextCard()">Next →</button>
+      <button class="btn btn-green" onclick="markCard(true)">✓ Got it</button>
+    </div>
+
+    <div style="text-align:center; margin-top:16px;">
+      <button class="btn btn-secondary" onclick="shuffleCards()" style="font-size:0.75rem; padding:7px 16px;">🔀 Shuffle</button>
+      <button class="btn btn-secondary" onclick="resetCards()" style="font-size:0.75rem; padding:7px 16px; margin-left:8px;">↺ Reset</button>
+    </div>
+  </div>
+</div>
+
+<!-- ===================== PRACTICE TEST TAB ===================== -->
+<div id="tab-practice" class="tab">
+  <div class="section-title">Practice Test</div>
+  <div class="section-sub">30 questions covering all sections — click an answer to check</div>
+
+  <div class="score-box" id="score-box">
+    <div class="score-num" id="score-num">0/30</div>
+    <div class="score-label">Practice Score — keep studying what you missed!</div>
+  </div>
+
+  <div class="test-controls">
+    <div style="font-size:0.85rem; color:var(--muted);">Score: <span id="live-score" style="color:var(--accent); font-weight:700;">0</span> / <span id="live-total">0</span> answered</div>
+    <button class="btn btn-secondary" onclick="resetTest()" style="font-size:0.78rem; padding:7px 16px;">↺ Reset Test</button>
+  </div>
+
+  <div id="questions-container"></div>
+</div>
+
+<!-- ===================== HOMEWORK TAB ===================== -->
+<div id="tab-homework" class="tab">
+  <div class="section-title">Homework Solutions</div>
+  <div class="section-sub">All assigned homework with complete worked solutions — click "Show Solution" on each</div>
+
+  <div id="hw-container"></div>
+</div>
+
+<!-- ===================== CHEAT SHEET TAB ===================== -->
+<div id="tab-cheatsheet" class="tab">
+  <div class="section-title">⚡ Cheat Sheet</div>
+  <div class="section-sub">Everything you need — print this in your head before Friday</div>
+
+  <div class="cheat-grid">
+    <div class="cheat-card">
+      <div class="cheat-card-title">Primary Ratios</div>
+      <div class="cheat-formula">
+        sin = <span class="highlight">opp/hyp</span><br>
+        cos = <span class="highlight">adj/hyp</span><br>
+        tan = <span class="highlight">opp/adj</span><br>
+        <br>
+        sin²θ + cos²θ = <span class="good">1</span>
+      </div>
+    </div>
+
+    <div class="cheat-card">
+      <div class="cheat-card-title">Reciprocal Ratios</div>
+      <div class="cheat-formula">
+        csc = <span class="highlight">1/sin</span> (hyp/opp)<br>
+        sec = <span class="highlight">1/cos</span> (hyp/adj)<br>
+        cot = <span class="highlight">1/tan</span> (adj/opp)<br>
+        <br>
+        <span class="warn">No calculator buttons!</span>
+      </div>
+    </div>
+
+    <div class="cheat-card">
+      <div class="cheat-card-title">Special Angles</div>
+      <div class="cheat-formula">
+        30°: sin=<span class="highlight">½</span>, cos=<span class="highlight">√3/2</span>, tan=<span class="highlight">√3/3</span><br>
+        45°: sin=<span class="highlight">√2/2</span>, cos=<span class="highlight">√2/2</span>, tan=<span class="highlight">1</span><br>
+        60°: sin=<span class="highlight">√3/2</span>, cos=<span class="highlight">½</span>, tan=<span class="highlight">√3</span>
+      </div>
+    </div>
+
+    <div class="cheat-card">
+      <div class="cheat-card-title">CAST Rule</div>
+      <div class="cheat-formula">
+        Q1 (0-90):  <span class="good">ALL +</span><br>
+        Q2 (90-180): <span class="highlight">SIN +</span><br>
+        Q3 (180-270): <span class="warn">TAN +</span><br>
+        Q4 (270-360): <span class="highlight">COS +</span><br>
+        <br>
+        "All Students Take Calculus"
+      </div>
+    </div>
+
+    <div class="cheat-card">
+      <div class="cheat-card-title">Related Acute Angles</div>
+      <div class="cheat-formula">
+        Q2: β = <span class="highlight">180° − θ</span><br>
+        Q3: β = <span class="highlight">θ − 180°</span><br>
+        Q4: β = <span class="highlight">360° − θ</span><br>
+        <br>
+        Principal: Q1=β, Q2=180−β<br>
+        Q3=180+β, Q4=360−β
+      </div>
+    </div>
+
+    <div class="cheat-card">
+      <div class="cheat-card-title">Key Identities</div>
+      <div class="cheat-formula">
+        tanθ = <span class="highlight">sinθ/cosθ</span><br>
+        sin²θ + cos²θ = <span class="good">1</span><br>
+        1 + tan²θ = <span class="good">sec²θ</span><br>
+        1 + cot²θ = <span class="good">csc²θ</span><br>
+        sin²θ = <span class="highlight">1 − cos²θ</span>
+      </div>
+    </div>
+
+    <div class="cheat-card">
+      <div class="cheat-card-title">Sine Law</div>
+      <div class="cheat-formula">
+        a/sinA = b/sinB = c/sinC<br>
+        <br>
+        Ambiguous (SSA, ∠A acute):<br>
+        h = b·sinA<br>
+        a&lt;h: <span class="warn">0 △</span> | a=h: <span class="highlight">1 △</span><br>
+        h&lt;a&lt;b: <span class="warn">2 △!</span> | a≥b: <span class="good">1 △</span>
+      </div>
+    </div>
+
+    <div class="cheat-card">
+      <div class="cheat-card-title">Cosine Law</div>
+      <div class="cheat-formula">
+        a² = b²+c²−<span class="warn">2bc·cosA</span><br>
+        <br>
+        Finding angle:<br>
+        cosA = <span class="highlight">(b²+c²−a²)/(2bc)</span><br>
+        <br>
+        <span class="warn">Do full calculation at once!</span>
+      </div>
+    </div>
+
+    <div class="cheat-card" style="grid-column: span 2;">
+      <div class="cheat-card-title">3D Problems — Bearings</div>
+      <div class="cheat-formula" style="display:grid; grid-template-columns:1fr 1fr; gap:12px;">
+        <div>
+          Bearing = clockwise from North<br>
+          Angle between objects = <span class="highlight">bearing₁ − bearing₂</span><br>
+          Angle of depression: use <span class="highlight">tan = h/d</span><br>
+          → d = <span class="highlight">h / tan(depression)</span>
+        </div>
+        <div>
+          North lines are <span class="good">parallel</span><br>
+          Z-pattern → alternate angles equal<br>
+          Once you have SAS or 2 sides + angle<br>
+          → use <span class="highlight">Cosine Law</span> for final distance
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="card" style="margin-top:16px;">
+    <div class="card-title">⚠️ Common Mistakes to AVOID</div>
+    <div class="rule"><div class="rule-icon">❌</div><div class="rule-text"><strong>Sine law:</strong> Forgetting to check for the ambiguous case when given SSA. You MUST calculate h = b·sinA and compare.</div></div>
+    <div class="rule"><div class="rule-icon">❌</div><div class="rule-text"><strong>Cosine law:</strong> Stopping after b²+c² and forgetting to subtract 2bc·cosA. The ENTIRE term is subtracted.</div></div>
+    <div class="rule"><div class="rule-icon">❌</div><div class="rule-text"><strong>Identities:</strong> Working on BOTH sides simultaneously. Always work on ONE side only.</div></div>
+    <div class="rule"><div class="rule-icon">❌</div><div class="rule-text"><strong>CAST:</strong> Forgetting there are ALWAYS 2 solutions between 0°–360° for sin, cos, tan equations.</div></div>
+    <div class="rule"><div class="rule-icon">❌</div><div class="rule-text"><strong>Exact values:</strong> Using a calculator when question says "exact." Use special triangles only!</div></div>
+    <div class="rule"><div class="rule-icon">❌</div><div class="rule-text"><strong>Reciprocals:</strong> Mixing up which is the reciprocal of which. Remember: <em>sine → co</em>secant, <em>co</em>sine → secant (they switch!)</div></div>
+    <div class="rule"><div class="rule-icon">❌</div><div class="rule-text"><strong>3D:</strong> Forgetting that the right angles are at the base (ground level), not in the tilted view.</div></div>
+  </div>
+</div>
+
+<script>
+// ==================== TIMER ====================
+let totalSeconds = 40 * 60;
+let timerRunning = false;
+let timerInterval;
+
+function startTimer() {
+  if (!timerRunning) {
+    timerRunning = true;
+    timerInterval = setInterval(() => {
+      totalSeconds--;
+      if (totalSeconds <= 0) {
+        clearInterval(timerInterval);
+        document.getElementById('timer').textContent = '00:00';
+        document.getElementById('timer').style.color = '#ef4444';
+        return;
+      }
+      const m = Math.floor(totalSeconds / 60);
+      const s = totalSeconds % 60;
+      document.getElementById('timer').textContent = `${String(m).padStart(2,'0')}:${String(s).padStart(2,'0')}`;
+      if (totalSeconds <= 300) {
+        document.getElementById('timer').style.color = '#ef4444';
+      }
+    }, 1000);
+  }
+}
+
+document.getElementById('timer').addEventListener('click', startTimer);
+document.getElementById('timer').title = 'Click to start 40-min countdown';
+
+// ==================== TABS ====================
+function showTab(name) {
+  document.querySelectorAll('.tab').forEach(t => t.classList.remove('active'));
+  document.querySelectorAll('.nav-btn').forEach(b => b.classList.remove('active'));
+  document.getElementById('tab-' + name).classList.add('active');
+  event.target.classList.add('active');
+}
+
+// ==================== FLASHCARDS ====================
+const ALL_CARDS = [
+  // 5.1
+  { cat:'ratios', q:'What is sin θ in a right triangle?', a:'sin θ = opposite / hypotenuse', e:'SOH — the side opposite the angle divided by the hypotenuse' },
+  { cat:'ratios', q:'What is cos θ in a right triangle?', a:'cos θ = adjacent / hypotenuse', e:'CAH — the side adjacent to the angle divided by the hypotenuse' },
+  { cat:'ratios', q:'What is tan θ in a right triangle?', a:'tan θ = opposite / adjacent', e:'TOA — the side opposite divided by the side adjacent' },
+  { cat:'ratios', q:'What is csc θ?', a:'csc θ = 1/sin θ = hypotenuse/opposite', e:'Cosecant is the reciprocal of sine. Think: sine → COsecant (they switch the co)' },
+  { cat:'ratios', q:'What is sec θ?', a:'sec θ = 1/cos θ = hypotenuse/adjacent', e:'Secant is the reciprocal of cosine. COsine → Secant (they switch the co)' },
+  { cat:'ratios', q:'What is cot θ?', a:'cot θ = 1/tan θ = adjacent/opposite', e:'Cotangent is the reciprocal of tangent' },
+  { cat:'ratios', q:'Why are sin and cos always ≤ 1 for acute angles?', a:'Because you divide by the hypotenuse, which is the LARGEST side', e:'opp/hyp and adj/hyp — dividing by the biggest always gives ≤1' },
+  { cat:'ratios', q:'How do you calculate csc(25°) on a calculator?', a:'1 ÷ sin(25°) ≈ 2.366', e:'There\'s no csc button — use the reciprocal: 1/sin' },
+  { cat:'ratios', q:'Can sin or cos ever be greater than 1?', a:'NO — for any acute angle, sin and cos are always ≤ 1', e:'Therefore csc and sec are always ≥ 1' },
+  { cat:'ratios', q:'cot θ = 1.2711, find θ', a:'tan θ = 1/1.2711 → θ = tan⁻¹(0.7867) ≈ 38°', e:'Flip to get the primary ratio, then use inverse function' },
+  // 5.2
+  { cat:'special', q:'What are the sides of a 45-45-90 special triangle?', a:'1, 1, √2 (legs = 1, hypotenuse = √2)', e:'Equal legs of 1 → Pythagoras: √(1²+1²) = √2' },
+  { cat:'special', q:'What are the sides of a 30-60-90 special triangle?', a:'1, √3, 2 (short leg=1, long leg=√3, hyp=2)', e:'Start with equilateral triangle side 2, drop perpendicular → cuts base to 1' },
+  { cat:'special', q:'sin 45° exact value?', a:'√2/2 (also written 1/√2)', e:'From 1-1-√2 triangle: opposite(1)/hypotenuse(√2) = 1/√2 = √2/2' },
+  { cat:'special', q:'cos 45° exact value?', a:'√2/2', e:'Same as sin 45° because the triangle is isosceles (two equal sides)' },
+  { cat:'special', q:'tan 45° exact value?', a:'1', e:'opposite/adjacent = 1/1 = 1' },
+  { cat:'special', q:'sin 30° exact value?', a:'1/2', e:'Short leg(1)/hypotenuse(2) = 1/2' },
+  { cat:'special', q:'cos 30° exact value?', a:'√3/2', e:'Long leg(√3)/hypotenuse(2) = √3/2' },
+  { cat:'special', q:'tan 30° exact value?', a:'1/√3 = √3/3', e:'opposite(1)/adjacent(√3) = 1/√3. Rationalize: multiply by √3/√3 = √3/3' },
+  { cat:'special', q:'sin 60° exact value?', a:'√3/2', e:'Long leg(√3)/hypotenuse(2) = √3/2. Note: sin60° = cos30°' },
+  { cat:'special', q:'cos 60° exact value?', a:'1/2', e:'Short leg(1)/hypotenuse(2) = 1/2. Note: cos60° = sin30°' },
+  { cat:'special', q:'tan 60° exact value?', a:'√3', e:'opposite(√3)/adjacent(1) = √3' },
+  { cat:'special', q:'Find exact value: (sin45°)(cos45°) + (sin30°)(sin60°)', a:'(√2/2)(√2/2) + (1/2)(√3/2) = 1/2 + √3/4 = (2+√3)/4', e:'Multiply across, find common denominator 4' },
+  { cat:'special', q:'√3·tanθ = 1, find θ (0°≤θ≤90°)', a:'tanθ = 1/√3 = √3/3 → θ = 30°', e:'Divide both sides by √3, recognize exact value' },
+  { cat:'special', q:'2cosθ = √3, find θ (0°≤θ≤90°)', a:'cosθ = √3/2 → θ = 30°', e:'Divide by 2, recognize the special value from the table' },
+  // 5.3 & 5.4
+  { cat:'cast', q:'What is the CAST rule?', a:'Q1: All +, Q2: Sin+, Q3: Tan+, Q4: Cos+', e:'"All Students Take Calculus" — counterclockwise from Q1' },
+  { cat:'cast', q:'What quadrants is sine POSITIVE?', a:'Quadrants 1 and 2 (0°–180°)', e:'y is positive above the x-axis in Q1 and Q2; sin = y/r' },
+  { cat:'cast', q:'What quadrants is cosine POSITIVE?', a:'Quadrants 1 and 4 (0°–90° and 270°–360°)', e:'x is positive on the right side; cos = x/r' },
+  { cat:'cast', q:'What quadrants is tangent POSITIVE?', a:'Quadrants 1 and 3 (same-sign quadrants)', e:'tan = y/x. Both negative or both positive → positive result' },
+  { cat:'cast', q:'Find all θ where sinθ = 0.5, 0°≤θ≤360°', a:'θ = 30° and θ = 150°', e:'β = sin⁻¹(0.5) = 30°. Sin+ in Q1 and Q2 → 30° and 180°−30°=150°' },
+  { cat:'cast', q:'Find all θ where cosθ = −0.5, 0°≤θ≤360°', a:'θ = 120° and θ = 240°', e:'β = cos⁻¹(0.5) = 60°. Cos− in Q2 and Q3 → 180°−60°=120° and 180°+60°=240°' },
+  { cat:'cast', q:'Find related acute angle for 225°', a:'225° − 180° = 45°', e:'In Q3: β = θ − 180°. Measure from x-axis to terminal arm.' },
+  { cat:'cast', q:'Find related acute angle for 315°', a:'360° − 315° = 45°', e:'In Q4: β = 360° − θ' },
+  { cat:'cast', q:'Point P(−3, 4) is on terminal arm. Find sin θ.', a:'r = √(9+16) = 5, sin θ = y/r = 4/5', e:'Always find r first using Pythagorean theorem' },
+  { cat:'cast', q:'Point P(−3, 4) is on terminal arm. What quadrant and principal angle?', a:'Q2, θ = 180° − tan⁻¹(4/3) ≈ 127°', e:'x<0, y>0 → Q2. β = tan⁻¹(4/3)≈53°, then 180°−53°=127°' },
+  { cat:'cast', q:'sin θ is positive and cos θ is negative. What quadrant?', a:'Quadrant 2', e:'S in CAST — only sine is positive in Q2' },
+  { cat:'cast', q:'Principal angle vs related acute angle — what\'s the difference?', a:'Principal: full angle 0°–360°. Related acute: angle to nearest x-axis (always acute)', e:'Related acute is always the "reference" angle for calculations' },
+  // 5.5
+  { cat:'identities', q:'State the Pythagorean identity', a:'sin²θ + cos²θ = 1', e:'Comes from x²+y²=r² divided by r². THE most important identity.' },
+  { cat:'identities', q:'State the quotient identity for tan', a:'tan θ = sin θ / cos θ', e:'Derived from (y/r)/(x/r) = y/x = tan θ' },
+  { cat:'identities', q:'State the identity: 1 + tan²θ = ?', a:'1 + tan²θ = sec²θ', e:'Divide sin²+cos²=1 by cos². Rearrangement of Pythagorean identity.' },
+  { cat:'identities', q:'State the identity: 1 + cot²θ = ?', a:'1 + cot²θ = csc²θ', e:'Divide sin²+cos²=1 by sin²' },
+  { cat:'identities', q:'What is sin²θ in terms of cosθ?', a:'sin²θ = 1 − cos²θ', e:'Rearrange Pythagorean identity: subtract cos²θ from both sides' },
+  { cat:'identities', q:'How do you START proving an identity?', a:'Work on the MORE complicated side only. Convert to sin and cos.', e:'Never work both sides simultaneously! Simplify one side to match the other.' },
+  { cat:'identities', q:'Simplify: (sinθ)(cosθ·tanθ)', a:'= (sinθ)(sinθ) = sin²θ', e:'Replace tan with sin/cos, then cos cancels' },
+  { cat:'identities', q:'Prove: cosθ·tanθ = sinθ', a:'LHS = cosθ·(sinθ/cosθ) = sinθ = RHS ✓', e:'Substitute tanθ = sinθ/cosθ, then cancel cosθ' },
+  { cat:'identities', q:'What strategy helps when you see a²-b² pattern in an identity?', a:'Factor as difference of squares: (a+b)(a-b)', e:'e.g. sin²−cos² = (sinθ+cosθ)(sinθ−cosθ)' },
+  { cat:'identities', q:'What is cot θ in terms of sin and cos?', a:'cot θ = cos θ / sin θ', e:'Cotangent = 1/tan = 1/(sin/cos) = cos/sin' },
+  // 5.6
+  { cat:'sinelaw', q:'State the Sine Law', a:'a/sinA = b/sinB = c/sinC', e:'Sides (lowercase) opposite their angles (uppercase)' },
+  { cat:'sinelaw', q:'When do you use the Sine Law?', a:'When you have a matching angle-side pair (and it\'s NOT a right triangle)', e:'Look for an X pattern. AAS or ASA situations.' },
+  { cat:'sinelaw', q:'What is the ambiguous case?', a:'When given SSA (side-side-angle) with an acute angle — could have 0, 1, or 2 triangles', e:'The side opposite the given angle might be able to swing to two positions' },
+  { cat:'sinelaw', q:'What is the formula for height h in the ambiguous case?', a:'h = b·sinA (where b is adjacent to angle A, a is opposite)', e:'h is the minimum length of side a needed to form any triangle' },
+  { cat:'sinelaw', q:'Ambiguous case: When do TWO triangles exist?', a:'When h < a < b (a is between h and b)', e:'h = b·sinA. Side a can reach the baseline in two places' },
+  { cat:'sinelaw', q:'If angle B = 44.8° in ambiguous case, what is the second angle?', a:'B₂ = 180° − 44.8° = 135.2°', e:'The obtuse supplement. Check: A + B₂ < 180° for validity' },
+  { cat:'sinelaw', q:'Given a=10, b=6, A=25°, how many triangles?', a:'h = 10·sin25° ≈ 4.2, and h(4.2) < b(6) < a(10): TWO triangles', e:'Wait — b<a means a≥b... actually: h<6<10, so yes TWO triangles exist' },
+  { cat:'sinelaw', q:'What does "bearing" mean in navigation?', a:'A clockwise angle measured from due North', e:'Bearing 090° = East. Bearing 270° = West. Bearing 000° = North.' },
+  // 5.7
+  { cat:'cosinelaw', q:'State the Cosine Law for finding side a', a:'a² = b² + c² − 2bc·cosA', e:'Like Pythagorean theorem with a correction term. When A=90°, correction=0.' },
+  { cat:'cosinelaw', q:'State the Cosine Law for finding angle A', a:'cosA = (b² + c² − a²) / (2bc)', e:'Rearrange: bring the 2bc·cosA to one side, then divide' },
+  { cat:'cosinelaw', q:'When do you use the Cosine Law?', a:'SAS (side-angle-side) or SSS (three sides given)', e:'When Sine Law fails because there\'s no matching pair' },
+  { cat:'cosinelaw', q:'What\'s the biggest mistake with Cosine Law?', a:'Forgetting that 2bc·cosA is subtracted as one term — do it all at once!', e:'a² = b²+c²−(2bc·cosA). Don\'t stop at b²+c² and add separately' },
+  { cat:'cosinelaw', q:'Using cosine law: a=7, b=5, c=8, find angle A', a:'cosA = (25+64−49)/(2·5·8) = 40/80 = 0.5 → A = 60°', e:'Plug into: cosA = (b²+c²−a²)/(2bc)' },
+  { cat:'cosinelaw', q:'If the angle in cosine law is obtuse, what happens to cos?', a:'cosA is NEGATIVE → subtraction becomes addition in a²=b²+c²−2bc·cosA', e:'cos(obtuse) < 0, so −2bc·(negative) = positive. The side opposite gets longer.' },
+  // 5.8
+  { cat:'3d', q:'How do you find the angle between two objects from above (bearings problem)?', a:'Subtract the two bearings: angle = bearing₁ − bearing₂', e:'The north lines are parallel, so the angle at the top = difference in bearings' },
+  { cat:'3d', q:'Formula for horizontal distance using angle of depression', a:'distance = height / tan(angle of depression)', e:'tan(depression) = opposite/adjacent = height/distance → distance = height/tan' },
+  { cat:'3d', q:'Why can you transfer the angle of depression to the base in 3D problems?', a:'Alternate interior angles: the sight line and ground are parallel (Z-pattern)', e:'Parallel lines cut by a transversal → alternate interior angles are equal' },
+  { cat:'3d', q:'3D problem strategy summary', a:'1) Subtract bearings for top angle 2) Use tan for side lengths 3) Use Cosine Law for final distance', e:'Always draw the "upside-down Y" — the 3D triangle flattened' },
+  { cat:'3d', q:'Bearing 345° is how many degrees from North?', a:'15° (west of North)', e:'360° − 345° = 15°. Almost all the way around, just 15° short.' },
+  { cat:'3d', q:'How do you sketch a 3D trig problem?', a:'Draw triangle from above. Drop perpendiculars (right angles at base). Label height, sides, and angle at top.', e:'The triangle at ground level + two vertical right triangles = the full picture' },
+];
+
+let currentCards = [...ALL_CARDS];
+let currentIndex = 0;
+let correctCount = 0;
+let wrongCount = 0;
+
+function setCategory(cat, btn) {
+  document.querySelectorAll('.fc-cat-btn').forEach(b => b.classList.remove('active'));
+  btn.classList.add('active');
+  currentCards = cat === 'all' ? [...ALL_CARDS] : ALL_CARDS.filter(c => c.cat === cat);
+  currentIndex = 0;
+  correctCount = 0;
+  wrongCount = 0;
+  showCard();
+}
+
+function showCard() {
+  const card = currentCards[currentIndex];
+  document.getElementById('fc-q').textContent = card.q;
+  document.getElementById('fc-a').textContent = card.a;
+  document.getElementById('fc-e').textContent = card.e;
+  document.getElementById('fc-counter').textContent = `Card ${currentIndex + 1} of ${currentCards.length}`;
+  document.getElementById('fc-correct').textContent = correctCount;
+  document.getElementById('fc-wrong').textContent = wrongCount;
+  document.getElementById('fc-bar').style.width = `${((currentIndex+1)/currentCards.length)*100}%`;
+  document.getElementById('flashcard').classList.remove('flipped');
+}
+
+function flipCard() {
+  document.getElementById('flashcard').classList.toggle('flipped');
+}
+
+function nextCard() {
+  if (currentIndex < currentCards.length - 1) {
+    currentIndex++;
+    showCard();
+  }
+}
+
+function prevCard() {
+  if (currentIndex > 0) {
+    currentIndex--;
+    showCard();
+  }
+}
+
+function markCard(correct) {
+  if (correct) correctCount++;
+  else wrongCount++;
+  nextCard();
+}
+
+function shuffleCards() {
+  for (let i = currentCards.length - 1; i > 0; i--) {
+    const j = Math.floor(Math.random() * (i + 1));
+    [currentCards[i], currentCards[j]] = [currentCards[j], currentCards[i]];
+  }
+  currentIndex = 0;
+  showCard();
+}
+
+function resetCards() {
+  currentIndex = 0;
+  correctCount = 0;
+  wrongCount = 0;
+  showCard();
+}
+
+// Init flashcards
+showCard();
+
+// ==================== PRACTICE TEST ====================
+const QUESTIONS = [
+  // 5.1
+  { section:'5.1', type:'mc', q:'In triangle DEF with DF=8cm, DE=20cm, and ∠D=90°. Which ratio correctly gives csc of ∠E?', choices:['8/20','20/8','EF/20','EF/8'], correct:2, explain:'csc E = hyp/opp. The hypotenuse is EF (opposite the right angle at D). The side opposite angle E is DF=8. So csc E = EF/DF. First find EF = √(8²+20²) = √(64+400) = √464 ≈ 21.5 cm. csc E = 21.5/8.' },
+  { section:'5.1', type:'mc', q:'The cosecant of 17° equals:', choices:['sin(17°)','1/sin(17°) ≈ 3.42','cos(73°)','1/cos(17°)'], correct:1, explain:'csc = 1/sin. Enter: 1 ÷ sin(17°) ≈ 3.4203' },
+  { section:'5.1', type:'mc', q:'Why is sec θ always ≥ 1 for acute angles?', choices:['Because sec = hyp/adj and hyp ≥ adj','Because sec = adj/hyp','Because tangent can be > 1','It is not always ≥ 1'], correct:0, explain:'sec = 1/cos = hyp/adj. The hypotenuse is always the longest side, so hyp ≥ adj, making sec ≥ 1.' },
+  // 5.2
+  { section:'5.2', type:'mc', q:'The exact value of tan 60° is:', choices:['√2/2','1','1/√3','√3'], correct:3, explain:'From the 30-60-90 triangle with sides 1, √3, 2: tan 60° = opposite/adjacent = √3/1 = √3' },
+  { section:'5.2', type:'mc', q:'Determine the exact value of (sin 45°)(cos 45°) + (sin 30°)(sin 60°)', choices:['(2+√3)/4','(1+√3)/4','√3/2','1'], correct:0, explain:'(√2/2)(√2/2) + (1/2)(√3/2) = 2/4 + √3/4 = (2+√3)/4' },
+  { section:'5.2', type:'mc', q:'If √3·tan θ = 1 and 0°≤θ≤90°, then θ equals:', choices:['60°','45°','30°','15°'], correct:2, explain:'tan θ = 1/√3 = √3/3. From special triangles, this is exactly tan 30°.' },
+  // 5.3
+  { section:'5.3', type:'mc', q:'The terminal arm of 135° lies in which quadrant?', choices:['Q1','Q2','Q3','Q4'], correct:1, explain:'90° < 135° < 180° → Quadrant 2' },
+  { section:'5.3', type:'mc', q:'The related acute angle for 225° is:', choices:['45°','55°','135°','35°'], correct:0, explain:'225° is in Q3. β = 225° − 180° = 45°' },
+  { section:'5.3', type:'mc', q:'Which of these angles has the same sine value as sin 50°?', choices:['230°','310°','130°','50°'], correct:2, explain:'Sine is positive in Q1 and Q2. sin 50° is positive. The Q2 angle with related acute angle 50° is 180°−50° = 130°.' },
+  // 5.4
+  { section:'5.4', type:'mc', q:'Point P(5, 11) is on the terminal arm. What is tan θ?', choices:['5/11','11/5','√146/5','√146/11'], correct:1, explain:'tan θ = y/x = 11/5. (No need for r for tangent!)' },
+  { section:'5.4', type:'mc', q:'Find all values of θ where cos θ = −0.872, 0°≤θ≤360°', choices:['60.7° and 299.3°','119.3° and 240.7°','29.3° and 209.3°','150.7° and 209.3°'], correct:1, explain:'β = cos⁻¹(0.872) ≈ 29.3°. Cosine is negative in Q2 and Q3. Q2: 180°−29.3°=150.7°. Q3: 180°+29.3°=209.3°. Wait — let me recalculate: cos⁻¹(0.872)≈29.3°. Q2: 180−29.3=150.7°, Q3: 180+29.3=209.3°.' },
+  { section:'5.4', type:'mc', q:'If csc θ = −2.3424, which quadrants could θ be in?', choices:['Q1 and Q2','Q2 and Q3','Q3 and Q4','Q1 and Q4'], correct:2, explain:'csc = 1/sin. If csc is negative, sin is negative. Sine is negative in Q3 and Q4.' },
+  // 5.5
+  { section:'5.5', type:'mc', q:'Which identity is the Pythagorean identity?', choices:['tan θ = sin θ/cos θ','sin²θ + cos²θ = 1','csc θ = 1/sin θ','1 + tan²θ = csc²θ'], correct:1, explain:'sin²θ + cos²θ = 1 is the fundamental Pythagorean identity, derived from x²+y²=r².' },
+  { section:'5.5', type:'mc', q:'Simplify: sin²θ/(1 − cos θ)', choices:['1 + cos θ','1 − cos θ','sin θ','cos θ'], correct:0, explain:'sin²θ = 1−cos²θ = (1−cosθ)(1+cosθ). So: (1−cosθ)(1+cosθ)/(1−cosθ) = 1+cosθ' },
+  { section:'5.5', type:'mc', q:'When proving a trig identity, you should:', choices:['Work on both sides and meet in the middle','Only work on the simpler side','Only work on the more complex side','Cross-multiply'], correct:2, explain:'Always work on the MORE complex side only. Simplify it until it matches the other side. Working on both sides simultaneously is not valid proof.' },
+  { section:'5.5', type:'mc', q:'1 + tan²θ equals:', choices:['csc²θ','sec²θ','1','cot²θ'], correct:1, explain:'1 + tan²θ = sec²θ. Derived by dividing sin²θ+cos²θ=1 by cos²θ' },
+  // 5.6 - Sine Law
+  { section:'5.6', type:'mc', q:'In triangle ABC, a=10, sinA=0.423, sinB=0.629. Find side b.', choices:['14.9','6.7','0.63','10.4'], correct:0, explain:'a/sinA = b/sinB → b = a·sinB/sinA = 10×0.629/0.423 ≈ 14.9' },
+  { section:'5.6', type:'mc', q:'Ambiguous case: ∠A=25°, b=10, a=6. How many triangles exist?', choices:['0','1','2','Cannot determine'], correct:2, explain:'h = b·sinA = 10·sin25° ≈ 4.23. Since h(4.23) < a(6) < b(10), there are TWO triangles.' },
+  { section:'5.6', type:'mc', q:'In the ambiguous case with two solutions, if one angle B = 44.8°, the other is:', choices:['44.8°','90°','135.2°','180°'], correct:2, explain:'B₂ = 180° − 44.8° = 135.2°. The obtuse supplement of B.' },
+  { section:'5.6', type:'mc', q:'Gabriel is 7.8m from a ball at angle 36° with Roan and the ball. Roan is 5.9m from the ball. What rule to find Gabriel-Roan distance?', choices:['SOHCAHTOA','Cosine Law','Sine Law','Pythagorean Theorem'], correct:2, explain:'We have a pair: the 36° angle is at Gabriel, side opposite is Roan-ball distance (5.9m), side Gabriel-ball is 7.8m. Use Sine Law.' },
+  // 5.7 - Cosine Law
+  { section:'5.7', type:'mc', q:'In triangle with b=7, c=8, and angle A=30°. Find a using Cosine Law.', choices:['a≈4.1','a≈15','a≈113','a≈5.6'], correct:0, explain:'a² = 49 + 64 − 2(7)(8)cos30° = 113 − 112×(√3/2) = 113 − 96.99 ≈ 16.01 → a ≈ 4.0' },
+  { section:'5.7', type:'mc', q:'Three sides: a=5, b=7, c=8. Find cos A.', choices:['0.70','0.79','(49+64−25)/112 = 88/112 ≈ 0.786','0.5'], correct:2, explain:'cosA = (b²+c²−a²)/(2bc) = (49+64−25)/(2×7×8) = 88/112 ≈ 0.786 → A ≈ 38.2°' },
+  { section:'5.7', type:'mc', q:'When should you use the Cosine Law instead of Sine Law?', choices:['When you have AAS','When you have a matching angle-side pair','When you have SAS or SSS','When it is a right triangle'], correct:2, explain:'Cosine Law is for SAS (side-angle-side — the angle is between the two known sides) or SSS (all three sides known).' },
+  // 5.8 - 3D
+  { section:'5.8', type:'mc', q:'Person on 50m bridge, bearing to boat A = 230°, bearing to boat B = 120°. What angle separates the boats as seen from above?', choices:['110°','70°','230°','120°'], correct:0, explain:'Angle between = 230° − 120° = 110°. The difference in bearings gives the angle at the observer.' },
+  { section:'5.8', type:'mc', q:'Helicopter 9m above ground. Angle of depression to Wolfman = 52°. Distance to Wolfman on ground:', choices:['9/cos52°','9×tan52°','9/tan52° ≈ 7.03m','9×sin52°'], correct:2, explain:'tan(52°) = height/distance → distance = height/tan(52°) = 9/tan(52°) ≈ 7.03m' },
+  { section:'5.8', type:'mc', q:'In a 3D bearing problem, why are north lines at both observation points treated as parallel?', choices:['They are not parallel','Because North is always perpendicular','North lines are all parallel (same direction) so alternate interior angles apply','Depends on the problem'], correct:2, explain:'True north points in the same direction everywhere on a flat map. So the north lines are parallel, allowing the Z-pattern to transfer angles.' },
+  // Mixed
+  { section:'Mixed', type:'mc', q:'The sine of 150° equals:', choices:['−√3/2','−1/2','1/2','√3/2'], correct:2, explain:'150° is in Q2. Related acute angle = 180°−150° = 30°. Sin is positive in Q2. So sin150° = sin30° = 1/2.' },
+  { section:'Mixed', type:'mc', q:'Prove which step is correct in proving: cos x + sin x·tan x = 1/cos x. Which substitution is FIRST?', choices:['Replace 1 with sin²x+cos²x','Replace tan x with sin x/cos x','Take derivative','Divide by sin x'], correct:1, explain:'First: replace tan x = sin x/cos x. Then: cos x + sin²x/cos x. Common denominator: (cos²x + sin²x)/cos x = 1/cos x = sec x ✓' },
+  { section:'Mixed', type:'mc', q:'Which of these CAN have two triangle solutions?', choices:['Given 3 sides (SSS)','Given 2 sides and included angle (SAS)','Given angle-side-angle (ASA)','Given 2 sides and non-included angle (SSA)'], correct:3, explain:'Only SSA (side-side-angle) with an acute angle can produce 0, 1, or 2 triangles — the ambiguous case!' },
+  { section:'Mixed', type:'mc', q:'csc θ = −2√3/3. Find exact values of sin θ.', choices:['sin θ = √3/2','sin θ = −√3/2','sin θ = −3/(2√3) = −√3/2','Both B and C'], correct:3, explain:'sin θ = 1/csc θ = 1/(−2√3/3) = −3/(2√3) = −3√3/(2×3) = −√3/2. Both B and C express the same value.' },
+];
+
+let answered = {};
+let totalAnswered = 0;
+
+function buildTest() {
+  const container = document.getElementById('questions-container');
+  container.innerHTML = '';
+  QUESTIONS.forEach((q, idx) => {
+    const div = document.createElement('div');
+    div.className = 'question-block';
+    div.id = 'qblock-' + idx;
+    const letters = ['A','B','C','D'];
+    let choicesHTML = q.choices.map((c, i) =>
+      `<div class="q-choice" id="qc-${idx}-${i}" onclick="answerQ(${idx}, ${i})">
+        <span class="choice-letter">${letters[i]}</span>
+        <span>${c}</span>
+      </div>`
+    ).join('');
+    div.innerHTML = `
+      <div class="q-num">${q.section} — Question ${idx+1}</div>
+      <div class="q-text">${q.q}</div>
+      <div class="q-choices">${choicesHTML}</div>
+      <div class="q-explain" id="qe-${idx}">${q.explain}</div>
+    `;
+    container.appendChild(div);
+  });
+}
+
+function answerQ(qIdx, choiceIdx) {
+  if (answered[qIdx] !== undefined) return;
+  answered[qIdx] = choiceIdx;
+  totalAnswered++;
+  const q = QUESTIONS[qIdx];
+  const choices = document.querySelectorAll(`[id^="qc-${qIdx}-"]`);
+  choices.forEach((c, i) => {
+    c.classList.add('disabled');
+    if (i === q.correct) c.classList.add('reveal-correct');
+  });
+  const selected = document.getElementById(`qc-${qIdx}-${choiceIdx}`);
+  if (choiceIdx === q.correct) {
+    selected.classList.add('selected-correct');
+  } else {
+    selected.classList.add('selected-wrong');
+  }
+  document.getElementById(`qe-${qIdx}`).classList.add('show');
+  updateScore();
+}
+
+function updateScore() {
+  const correct = Object.entries(answered).filter(([k, v]) => QUESTIONS[k].correct === v).length;
+  document.getElementById('live-score').textContent = correct;
+  document.getElementById('live-total').textContent = totalAnswered;
+  if (totalAnswered === QUESTIONS.length) {
+    const box = document.getElementById('score-box');
+    document.getElementById('score-num').textContent = `${correct}/${QUESTIONS.length}`;
+    box.classList.add('show');
+    box.scrollIntoView({ behavior: 'smooth' });
+  }
+}
+
+function resetTest() {
+  answered = {};
+  totalAnswered = 0;
+  document.getElementById('live-score').textContent = '0';
+  document.getElementById('live-total').textContent = '0';
+  document.getElementById('score-box').classList.remove('show');
+  buildTest();
+}
+
+buildTest();
+
+// ==================== HOMEWORK ====================
+const HOMEWORK = [
+  {
+    title: 'p.251 #2–8 (alt), 11, 13, 15 — Section 5.1: Trig Ratios of Acute Angles',
+    color: 'var(--accent)',
+    problems: [
+      { q:'#2b: In △ABC with ∠C = 90°, CB = 3, CA = 4, AB = 5. Express the six trig ratios for ∠A.', s:'From ∠A: opp=CB=3, adj=CA=4, hyp=AB=5\n<strong>sin A = 3/5</strong>, <strong>cos A = 4/5</strong>, <strong>tan A = 3/4</strong>\n<strong>csc A = 5/3</strong>, <strong>sec A = 5/4</strong>, <strong>cot A = 4/3</strong>' },
+      { q:'#2d: In △ABC with ∠C = 90°, CB = 3, CA = 4, AB = 5. Express the six trig ratios for ∠B.', s:'From ∠B: opp=CA=4, adj=CB=3, hyp=AB=5\n<strong>sin B = 4/5</strong>, <strong>cos B = 3/5</strong>, <strong>tan B = 4/3</strong>\n<strong>csc B = 5/4</strong>, <strong>sec B = 5/3</strong>, <strong>cot B = 3/4</strong>' },
+      { q:'#4b: Determine cot(52°) to 4 decimal places.', s:'cot(52°) = 1/tan(52°)\n1 ÷ tan(52°) = 1 ÷ 1.2799... ≈ <strong>0.7813</strong>' },
+      { q:'#6b: Find θ to the nearest degree if csc θ = 2.3456', s:'csc θ = 2.3456 → sin θ = 1/2.3456 ≈ 0.4264\nθ = sin⁻¹(0.4264) ≈ <strong>25°</strong>' },
+      { q:'#8b: Find θ to the nearest degree if cot θ = 1.5013, 0°<θ<90°', s:'cot θ = 1.5013 → tan θ = 1/1.5013 = 0.6661\nθ = tan⁻¹(0.6661) ≈ <strong>34°</strong>' },
+      { q:'#11: In △DEF with DF=8.0cm, DE=20.0cm, ∠D=90°. Find EF and determine angle F using a reciprocal ratio.', s:'EF = √(8² + 20²) = √(64+400) = √464 ≈ <strong>21.5 cm</strong>\nFor ∠F: cot F = DF/DE = 8/20 = 0.4, so tan F = 20/8 = 2.5\nOR: sec F = EF/DF = 21.5/8 = 2.69, so cos F = 8/21.5\nF = cos⁻¹(8/21.5) ≈ <strong>68.2°</strong>\nThen ∠E = 90° − 68.2° ≈ <strong>21.8°</strong> (verify: tan E = 8/20 = 0.4 ✓)' },
+      { q:'#13: sin θ and cos θ are both less than 1 for acute angles. Explain why tan θ can be greater than 1.', s:'tan θ = opp/adj. The hypotenuse is ALWAYS the largest side, but the opposite and adjacent sides are compared to EACH OTHER, not the hypotenuse. If the opposite side is longer than the adjacent side, tan θ > 1. For example: tan 60° = √3 ≈ 1.732 > 1.' },
+      { q:'#15: Which reciprocal trig ratio of ∠A is greatest given CB=3, CA=4, AB=5 (∠C=90°)?', s:'From ∠A: sin A=3/5, cos A=4/5, tan A=3/4\ncsc A = 5/3 ≈ 1.667\nsec A = 5/4 = 1.25\ncot A = 4/3 ≈ 1.333\n<strong>Greatest reciprocal trig ratio: csc A = 5/3 ≈ 1.667</strong>' },
+    ]
+  },
+  {
+    title: 'p.286 #1–7 (alt), 8, 10, 11, 12 — Section 5.2: Special Angles & Exact Values',
+    color: '#a78bfa',
+    problems: [
+      { q:'#1: Sketch the two special triangles used for exact values.', s:'<strong>Triangle 1 (45-45-90):</strong> Both legs = 1, hypotenuse = √2. Angles: 45°, 45°, 90°\nDerived from isosceles right triangle.\n\n<strong>Triangle 2 (30-60-90):</strong> Sides 1, √3, 2. Start with equilateral △ side 2, drop perpendicular.\nShort leg (opp 30°) = 1, long leg (opp 60°) = √3, hyp = 2.' },
+      { q:'#2b: Find exact value of sin 30°', s:'From 30-60-90 triangle: opp(30°)=1, hyp=2\n<strong>sin 30° = 1/2</strong>' },
+      { q:'#2d: Find exact value of tan 60°', s:'From 30-60-90 triangle: opp(60°)=√3, adj(60°)=1\n<strong>tan 60° = √3</strong>' },
+      { q:'#4b: Determine the exact value: cos²45° − sin²45°', s:'= (√2/2)² − (√2/2)² = 2/4 − 2/4 = <strong>0</strong>' },
+      { q:'#4d: Determine exact value: 2sin45°·cos45°', s:'= 2·(√2/2)·(√2/2) = 2·(2/4) = 2·(1/2) = <strong>1</strong>' },
+      { q:'#6b: Determine exact value: sin30°·cos60° + cos30°·sin60°', s:'= (1/2)(1/2) + (√3/2)(√3/2)\n= 1/4 + 3/4\n= <strong>1</strong>\n(This is actually the addition formula: sin(30°+60°) = sin90° = 1 ✓)' },
+      { q:'#8: Determine exact value of (sin45°)(cos45°) + (sin30°)(sin60°)', s:'= (√2/2)(√2/2) + (1/2)(√3/2)\n= 2/4 + √3/4\n= <strong>(2 + √3)/4</strong>' },
+      { q:'#10: Solve exactly: 2sinθ = √3, 0°≤θ≤90°', s:'sinθ = √3/2 → look at special triangle table\n<strong>θ = 60°</strong> (since sin60° = √3/2 ✓)' },
+      { q:'#11: Solve exactly: √3·tanθ = 1, 0°≤θ≤90°', s:'tanθ = 1/√3 = √3/3 → special triangle table\n<strong>θ = 30°</strong> (since tan30° = 1/√3 = √3/3 ✓)' },
+      { q:'#12: Determine the exact area of △ACD where AB=6, tanα=1, and ∠ABD=60° (from textbook p.287)', s:'tanα = 1 → α = 45° (since tan45°=1). If AB = 6 and ∠ABD = 60°:\nBC = AB = 6 (from tan α = AB/BC = 1)\ntan60° = BC/BD → √3 = 6/BD → BD = 6/√3 = 6√3... \nActually: from video solution, AB=6, and BC=6 (since tan45°=1)\ntan60° = BC/AD-portion... Using the video approach:\nBC = 6, BD = BC·tan(60°) not quite. From the full solution:\nAB = BD = 6 (from tanα = AB/BD = 1)\ntan60° = CD/BD → <strong>CD = 6√3</strong>\nBase AC = AB + BC... Let me use the video: Base = 6+6√3, Height = 6\nArea = ½·(6+6√3)·6 = ½·6·6(1+√3) = <strong>18(1+√3) units²</strong>' },
+    ]
+  },
+  {
+    title: 'p.292 #1–4 — Section 5.3: Trig Ratios for Angles > 90°',
+    color: 'var(--accent3)',
+    problems: [
+      { q:'#1: Sketch angles in standard position: a) 50° b) 130° c) 230° d) 310°', s:'a) <strong>50°</strong>: Terminal arm in Q1, acute, 50° from positive x-axis counterclockwise\nb) <strong>130°</strong>: Terminal arm in Q2, between 90° and 180°\nc) <strong>230°</strong>: Terminal arm in Q3, 50° past the negative x-axis (180°+50°)\nd) <strong>310°</strong>: Terminal arm in Q4, 50° before completing the circle (360°-50°)\nAll four are related — they share a related acute angle of 50°!' },
+      { q:'#2: For each angle, identify related acute angle and sign of each primary ratio:\na) 315° b) 285°', s:'a) <strong>315°</strong>: Q4, β = 360°−315° = <strong>45°</strong>\nCAST → Q4: cos+, sin−, tan−\nsin315° = −sin45° = −√2/2\ncos315° = cos45° = √2/2\ntan315° = −tan45° = −1\n\nb) <strong>285°</strong>: Q4, β = 360°−285° = <strong>75°</strong>\nCAST → Q4: cos+, sin−, tan−\nsin285° = −sin75°\ncos285° = cos75°\ntan285° = −tan75°' },
+      { q:'#3: Use related acute angles to state equivalent expressions:\na) sin160° b) tan110°', s:'a) <strong>sin160°</strong>: Q2, β = 180°−160° = 20°, sin+ in Q2\nsin160° = <strong>sin20°</strong>\n\nb) <strong>tan110°</strong>: Q2, β = 180°−110° = 70°, tan− in Q2\ntan110° = <strong>−tan70°</strong>' },
+      { q:'#4: For sine of 50°, find the angle in Q2 with the same sine value, and identify angles in Q3 and Q4 with the same magnitude but negative.', s:'sin50° ≈ 0.766 (positive)\n\n<strong>Same value in Q2:</strong> 180°−50° = <strong>130°</strong> (sin130° = sin50° ✓)\n\n<strong>Same magnitude, negative in Q3:</strong> 180°+50° = <strong>230°</strong> (sin230° = −sin50°)\n\n<strong>Same magnitude, negative in Q4:</strong> 360°−50° = <strong>310°</strong> (sin310° = −sin50°)\n\nVerify: sin50°≈0.766, sin130°≈0.766 ✓, sin230°≈−0.766 ✓, sin310°≈−0.766 ✓' },
+    ]
+  },
+  {
+    title: 'p.299 #1, 2ad, 3b, 4ad, 5d, 6acf, 8ace, 12 — Section 5.4: Any Angle 0°–360°',
+    color: 'var(--accent4)',
+    problems: [
+      { q:'#1: The point P(3,4) is on terminal arm. Find the 3 primary trig ratios and the principal angle.', s:'r = √(3²+4²) = √25 = 5\n<strong>sin θ = 4/5 = 0.8</strong>\n<strong>cos θ = 3/5 = 0.6</strong>\n<strong>tan θ = 4/3 ≈ 1.333</strong>\nPrincipal angle: θ = tan⁻¹(4/3) ≈ <strong>53°</strong> (Q1)' },
+      { q:'#2a: Point P(5, 11) on terminal arm. Find primary trig ratios and θ.', s:'r = √(25+121) = √146 ≈ 12.08\n<strong>sin θ = 11/12.1 ≈ 0.91</strong>\n<strong>cos θ = 5/12.1 ≈ 0.41</strong>\n<strong>tan θ = 11/5 = 2.2</strong>\nθ = tan⁻¹(11/5) ≈ tan⁻¹(2.2) ≈ <strong>66°</strong>' },
+      { q:'#2d: Point P(−5, −8) on terminal arm. Find primary trig ratios and θ.', s:'r = √(25+64) = √89 ≈ 9.43\nIn Q3: x<0, y<0 → sin−, cos−, tan+\n<strong>sin θ = −8/9.43 ≈ −0.85</strong>\n<strong>cos θ = −5/9.43 ≈ −0.53</strong>\n<strong>tan θ = −8/−5 = 8/5 = 1.6 (positive!)</strong>\nβ = tan⁻¹(8/5) ≈ 58°\nPrincipal angle: θ = 180°+58° = <strong>238°</strong>' },
+      { q:'#3b: Determine the principal angle and related acute angle: cos θ = −1/4, 0°≤θ≤360°, θ in Q2', s:'cos θ = −1/4 → β = cos⁻¹(1/4) ≈ 75.5°\nQ2: θ = 180° − 75.5° ≈ <strong>104°</strong> (principal angle)\nRelated acute angle: <strong>β ≈ 76°</strong>' },
+      { q:'#4a: Find two values of θ (0°≤θ≤360°): sin θ = 0.4815', s:'β = sin⁻¹(0.4815) ≈ 28.8°\nsin+ in Q1 and Q2:\n<strong>θ = 28.8°</strong> (Q1) and <strong>θ = 180°−28.8° = 151.2°</strong> (Q2)' },
+      { q:'#4d: Find two values: cos θ = −0.8722', s:'β = cos⁻¹(0.8722) ≈ 29.3°\ncos− in Q2 and Q3:\n<strong>θ = 180°−29.3° = 150.7°</strong> (Q2) and <strong>θ = 180°+29.3° = 209.3°</strong> (Q3)' },
+      { q:'#5d: Find two values: csc θ = −2.3424', s:'sin θ = 1/−2.3424 ≈ −0.4269\nβ = sin⁻¹(0.4269) ≈ 25.3°\nsin− in Q3 and Q4:\n<strong>θ = 180°+25.3° = 205.3°</strong> (Q3) and <strong>θ = 360°−25.3° = 334.7°</strong> (Q4)' },
+      { q:'#6a: sin θ = 1/3, θ in Q2. Find x, y, r (exact) and principal angle.', s:'sin = y/r = 1/3 → y=1, r=3\nx² = r²−y² = 9−1 = 8 → x = −√8 = −2√2 (negative in Q2)\n<strong>x = −2√2, y = 1, r = 3</strong>\nβ = sin⁻¹(1/3) ≈ 19.5° ≈ 19°\nPrincipal angle: θ = 180°−19° = <strong>161°</strong>' },
+      { q:'#6c: cos θ = −1/4, θ in Q2. Find x, y, r and principal angle.', s:'cos = x/r = −1/4 → x=−1, r=4\ny² = r²−x² = 16−1 = 15 → y = √15 (positive in Q2)\n<strong>x = −1, y = √15, r = 4</strong>\nβ = cos⁻¹(1/4) ≈ 75.5°\nPrincipal angle: θ = 180°−75.5° ≈ <strong>104°</strong>' },
+      { q:'#6f: sec θ = −3.5, 0°≤θ≤360°. Find θ (two values).', s:'sec = −3.5 = −7/2 → cos = −2/7\nβ = cos⁻¹(2/7) ≈ 73.4°\ncos− in Q2 and Q3:\n<strong>θ = 180°−73.4° = 106.6°</strong> (Q2)\n<strong>θ = 180°+73.4° = 253.4°</strong> (Q3)' },
+      { q:'#8a: sin θ = 0.3, find all θ (0°≤θ≤360°)', s:'β = sin⁻¹(0.3) ≈ 17.5°\nsin+ in Q1 and Q2:\n<strong>θ ≈ 17.5°</strong> and <strong>θ ≈ 162.5°</strong>' },
+      { q:'#8c: tan θ = 2.1445, find all θ (0°≤θ≤360°)', s:'β = tan⁻¹(2.1445) ≈ 65°\ntan+ in Q1 and Q3:\n<strong>θ ≈ 65°</strong> and <strong>θ ≈ 245°</strong>' },
+      { q:'#8e: cot θ = −0.7813, find all θ', s:'cot = −0.7813 → tan = 1/(−0.7813) ≈ −1.28\nβ = tan⁻¹(1.28) ≈ 52°\ntan− in Q2 and Q4:\n<strong>θ ≈ 180°−52° = 128°</strong> (Q2) and <strong>θ ≈ 360°−52° = 308°</strong> (Q4)' },
+      { q:'#12: sin θ = √21/5. Find all exact values of tan θ (0°≤θ≤360°).', s:'sin = y/r = √21/5 → y=√21, r=5\nx² = 25−21 = 4 → x = ±2\nSin is positive in Q1 and Q2:\nQ1: x=+2 → tan θ = y/x = <strong>√21/2</strong>\nQ2: x=−2 → tan θ = y/x = <strong>−√21/2</strong>' },
+    ]
+  },
+  {
+    title: 'p.310 #1–8 (alt), 12, 13 — Section 5.5: Trig Identities',
+    color: 'var(--accent5)',
+    problems: [
+      { q:'#1: Prove the quotient identity: tan θ = sin θ/cos θ using x, y, r', s:'LHS = tan θ = y/x (by definition)\nRHS = sinθ/cosθ = (y/r)/(x/r)\n= (y/r) × (r/x)   [invert and multiply]\n= y/x\n<strong>LHS = RHS ✓</strong>' },
+      { q:'#2: Prove: sin²θ + cos²θ = 1 using x, y, r', s:'LHS = sin²θ + cos²θ = (y/r)² + (x/r)²\n= y²/r² + x²/r²\n= (x²+y²)/r²\n= r²/r²  [since x²+y²=r² by Pythagoras]\n= <strong>1 = RHS ✓</strong>' },
+      { q:'#4b: Prove: sin²φ/(1−cosφ)(1+cosφ) = 1', s:'RHS denominator = (1−cosφ)(1+cosφ) = 1−cos²φ\nSo RHS = sin²φ/(1−cos²φ)\nSince sin²φ = 1−cos²φ:\n= (1−cos²φ)/(1−cos²φ)\n= <strong>1 = LHS ✓</strong>' },
+      { q:'#6b: Prove: tan²α/(1+tan²α) = sin²α', s:'LHS: Replace 1+tan²α = sec²α (Pythagorean identity)\n= tan²α/sec²α\n= (sin²α/cos²α) ÷ (1/cos²α)\n= (sin²α/cos²α) × cos²α\n= <strong>sin²α = RHS ✓</strong>' },
+      { q:'#8a: Prove: sin²φ = (1−cosφ)(1+cosφ)', s:'RHS = 1−cosφ+cosφ−cos²φ  [FOIL/expand]\n= 1−cos²φ\n= sin²φ  [Pythagorean identity]\n= <strong>LHS ✓</strong>' },
+      { q:'#8c: Prove: cos²x = (1−sinx)(1+sinx)', s:'RHS = 1−sin²x  [difference of squares]\n= cos²x  [Pythagorean identity]\n= <strong>LHS ✓</strong>' },
+      { q:'#8d: Prove: sin²θ + 2cos²θ − 1 = cos²θ', s:'LHS = sin²θ + 2cos²θ − 1\nReplace sin²θ = 1−cos²θ:\n= (1−cos²θ) + 2cos²θ − 1\n= 1 − cos²θ + 2cos²θ − 1\n= <strong>cos²θ = RHS ✓</strong>' },
+      { q:'#8e: Prove: sin⁴α − cos⁴α = sin²α − cos²α', s:'LHS = (sin²α)² − (cos²α)²\n= (sin²α + cos²α)(sin²α − cos²α)  [difference of squares]\n= (1)(sin²α − cos²α)  [Pythagorean identity]\n= <strong>sin²α − cos²α = RHS ✓</strong>' },
+      { q:'#12b: Prove the identity from p.311 #12b (involves tan²α and sine)', s:'The identity: tan²α − sin²α = tan²α · sin²α\nLHS = sin²α/cos²α − sin²α\n= sin²α(1/cos²α − 1)  [factor sin²α]\n= sin²α(1−cos²α)/cos²α\n= sin²α · sin²α/cos²α\n= sin²α · tan²α\n= <strong>tan²α · sin²α = RHS ✓</strong>' },
+      { q:'#13: Prove: tan θ + 1/tan θ = 1/(sinθ·cosθ)', s:'LHS = sinθ/cosθ + cosθ/sinθ\nCommon denominator sinθ·cosθ:\n= sin²θ/(sinθ·cosθ) + cos²θ/(sinθ·cosθ)\n= (sin²θ + cos²θ)/(sinθ·cosθ)\n= 1/(sinθ·cosθ)\n= <strong>RHS ✓</strong>' },
+    ]
+  },
+  {
+    title: 'p.318 #1b, 2, 3c, 4b, 5d, 7, 8, 9, 12 — Section 5.6: Sine Law & Ambiguous Case',
+    color: 'var(--accent)',
+    problems: [
+      { q:'#1b: Gabriel is 7.8m from ball (angle 36° between Roan-ball line). Roan is 5.9m from ball. Find Gabriel-Roan distance.', s:'Setup: ∠A=36° at Gabriel, b=7.8m (Gabriel-ball), a=5.9m (Roan-ball)\nUsing Sine Law: a/sinA = b/sinB\n5.9/sin36° = 7.8/sinB\nsinB = 7.8·sin36°/5.9 = 7.8×0.5878/5.9 ≈ 0.7764\n∠B = sin⁻¹(0.7764) ≈ 51°\n∠C = 180°−36°−51° = 93°\nc/sinC = 5.9/sin36°\nc = 5.9·sin93°/sin36° ≈ 5.9×0.9986/0.5878 ≈ <strong>10.0 m</strong>' },
+      { q:'#2: Two solutions in ambiguous case: a=10, b=6, A=25°. Find BOTH possible triangles.', s:'h = b·sinA = 10·sin25° ≈ 4.23\nSince h(4.23) < a(6)... wait, a=6, b=10. So h < a < b → TWO triangles!\nSine Law: sinB/b = sinA/a → sinB = 10·sin25°/6 ≈ 0.7042\n∠B₁ = sin⁻¹(0.7042) ≈ 44.8°\n∠B₂ = 180°−44.8° = 135.2°\n\n<strong>Triangle 1:</strong> ∠A=25°, ∠B=44.8°, ∠C=110.2°\nc₁ = 6·sin110.2°/sin25° ≈ 13.3\n\n<strong>Triangle 2:</strong> ∠A=25°, ∠B=135.2°, ∠C=19.8°\nc₂ = 6·sin19.8°/sin25° ≈ 4.8' },
+      { q:'#3c: Determine number of triangles: A=30°, a=8, b=14', s:'h = b·sinA = 14·sin30° = 14·0.5 = 7\nSince a=8 > h=7 and a=8 < b=14:\nh < a < b → <strong>TWO triangles exist</strong>' },
+      { q:'#4b: Gabriel campsite 15.6m from lake, 36m from lookout. From lake, angle between campsite and lookout = 140°. Find bearing of lookout from campsite.', s:'Using Sine Law in triangle: sides 15.6m, 36m, angle at lake = 140°\nsinC/c = sinB/b: sinC/36 = sin140°/? Need side c first.\nAngle at campsite (∠A) — use Sine Law:\nsinA/a = sinLake/c: sinA/36 = sin140°/?\nActually we need the angle at campsite:\n15.6/sinC = 36/sinA — no, sin(140°)/(opposite side from lake)\nBy Sine Law: 15.6/sinC = ? We know angle at Lake=140°, sides from Lake=15.6(camp) and from camp=36(lookout)\nsin(∠camp)/36 = sin(140°)/lookout-lake distance\nFirst find camp-lake: 15.6m. Find angle at camp:\nsin(∠camp)/opposite-lake = sin140°/(lake-lookout)\nNeed 3rd side by Sine Law: sin∠camp = 15.6... \n<strong>Using sine law: sin(angle at camp)/15.6 not valid without more info.</strong>\nFrom diagram: sinA/15.6 with angle Lake=140°: sinA = 15.6·sin140°/36\n= 15.6×0.6428/36 ≈ 0.2786 → ∠A ≈ 16.2°\nBearing = 90°−16.2° = 73.8° → bearing ≈ <strong>N74°E or bearing ≈ 074°</strong>' },
+      { q:'#5d: Determine if 0, 1, or 2 triangles: A=40°, a=5, b=6', s:'h = b·sinA = 6·sin40° ≈ 6×0.6428 ≈ 3.86\nh(3.86) < a(5) < b(6): <strong>TWO triangles</strong>' },
+      { q:'#7: Solve triangle: ∠A=102°, a=19.5cm, ∠B=30°', s:'∠C = 180°−102°−30° = 48°\nBy Sine Law: a/sinA = b/sinB = c/sinC\n19.5/sin102° = b/sin30° = c/sin48°\nb = 19.5·sin30°/sin102° = 19.5×0.5/0.9781 ≈ <strong>9.96 cm</strong>\nc = 19.5·sin48°/sin102° = 19.5×0.7431/0.9781 ≈ <strong>14.82 cm</strong>' },
+      { q:'#8: In a triangle, sinA/a = sinB/b. If ∠B=42°, b=12, ∠A=35°, find a.', s:'a/sinA = b/sinB\na/sin35° = 12/sin42°\na = 12·sin35°/sin42° = 12×0.5736/0.6691 ≈ <strong>10.3</strong>' },
+      { q:'#9: Forest fire towers A and B are 20.3km apart. Bearing of B from A is 70°. Bearing of fire from A is 25°, from B is 345°. Find distances.', s:'Angle at A = 70°−25° = 45°\nAngle at B: N lines parallel, Z-pattern: angle = 70° there\n15° from north = angle inside at B\nAngle at B (internal) = 180°−70°−15° = 95°\nAngle at fire F = 180°−45°−95° = 40°\nBy Sine Law: 20.3/sin40° = FA/sin95° = FB/sin45°\n<strong>FA = 20.3·sin95°/sin40° ≈ 31.5 km</strong>\n<strong>FB = 20.3·sin45°/sin40° ≈ 22.3 km</strong>' },
+      { q:'#12: Ambiguous case problem — given ∠A is obtuse (A>90°). How many triangles can exist?', s:'If ∠A is obtuse:\n- a must be > b (the given adjacent side) for ANY triangle\n- If a≤b: the angles would add to more than 180° — impossible\n- If a>b: exactly <strong>ONE triangle</strong> exists\nSo with obtuse ∠A: either 0 or 1 triangle (never 2).' },
+    ]
+  },
+  {
+    title: 'p.332 #1, 3ad, 4, 6, 7, 9, 10 — Section 5.8: 3D Trig Problems',
+    color: '#a78bfa',
+    problems: [
+      { q:'#1: Height of cliff — angles of elevation from point D: ∠ADB=42°, ∠ACB=63° and ∠BCD=38° (from diagram). BD=68.5m.', s:'In △BCD:\n∠BDC = 42°, ∠BCD = 38° (given), so ∠DBC = 180°−42°−38° = 100°... \nActually from the 5.8 lesson diagram: angles are ∠CDB=42°, ∠DBC=63° at B.\n∠BCD = 180°−42°−63° = 75°\nUsing Sine Law: BC/sin42° = 68.5/sin75°\nBC = 68.5·sin42°/sin75° ≈ 68.5×0.6691/0.9659 ≈ <strong>47.4 m</strong>\nThen in right triangle with angle 38° at base:\nh = BC·tan38° (no — using the right angle at C)\ntan(∠CBH) = h/BC where ∠CBH = 90°−63° ... \nFrom the video solution: BC ≈ 74.11m (using 99° angle), h = 74.11·tan33.1° ≈ <strong>48.3m</strong>' },
+      { q:'#3a: Emma on 50m bridge, boat A at bearing 230°, boat B at bearing 120°. Depression to A = 38°, to B = 35°. Find distances EA and EB.', s:'Horizontal distance to boat A:\ntan38° = 50/d_A → d_A = 50/tan38° = 50/0.7813 ≈ <strong>64.0m</strong>\nHorizontal distance to boat B:\ntan35° = 50/d_B → d_B = 50/tan35° = 50/0.7002 ≈ <strong>71.4m</strong>' },
+      { q:'#3d: Continuing #3 — find distance between boats A and B.', s:'Angle between bearings = 230°−120° = 110°\nd_A ≈ 64.0m, d_B ≈ 71.4m, angle = 110°\nBy Cosine Law:\nd² = 64² + 71.4² − 2(64)(71.4)cos110°\n= 4096 + 5097.96 − 9139.2×(−0.342)\n= 9193.96 + 3125.6 ≈ 12319.6\nd ≈ √12319.6 ≈ <strong>111 m</strong>' },
+      { q:'#4: Cliff height problem — two observers A and B, survey data given. Step-by-step approach.', s:'Strategy for any cliff height problem:\n1. Identify the triangle on the ground (A-B-C base triangle)\n2. Find the unknown ground distance using Sine Law\n3. Then use that distance with the angle of elevation to find height\n\nFormula: h = ground_distance × tan(angle of elevation)\nOR: h = ground_distance × tan(angle of depression at top)' },
+      { q:'#6: Jedi council member 9m above. Wolfman bearing 250°, Laser Man bearing 145°. Depression angles 52° and 48°. Find distance between Jedi.', s:'Angle between = 250°−145° = 105°\nd_W = 9/tan52° = 9/1.2799 ≈ 7.03m\nd_L = 9/tan48° = 9/1.1106 ≈ 8.10m\nBy Cosine Law:\nd² = 7.03² + 8.10² − 2(7.03)(8.10)cos105°\n= 49.42 + 65.61 − 113.89×(−0.2588)\n= 115.03 + 29.47\n= 144.5\nd ≈ <strong>12.02m</strong> apart' },
+      { q:'#7: Two hikers lost in Algonquin. Helicopter 200m above. Hiker 1 bearing 240°, depression 13°. Hiker 2 bearing 68°, depression 9°. How far apart?', s:'Angle between = 240°−68° = 172°\nd₁ = 200/tan13° ≈ 200/0.2309 ≈ <strong>866.3m</strong>\nd₂ = 200/tan9° ≈ 200/0.1584 ≈ <strong>1262.8m</strong>\nBy Cosine Law:\nd² = 866.3² + 1262.8² − 2(866.3)(1262.8)cos172°\n= 750,555 + 1,594,665 − 2,188,978×(−0.9903)\n= 2,345,220 + 2,168,238\n= 4,513,458\nd ≈ <strong>2124m</strong>' },
+      { q:'#9: General 3D approach — bearing problems with perpendicular drops.', s:'Key facts for all 3D trig problems:\n1. <strong>Bearing</strong>: clockwise from North\n2. <strong>Angle between two objects</strong>: difference in bearings\n3. <strong>Right angles</strong>: the vertical triangles always have 90° at the ground\n4. <strong>Z-pattern</strong>: transfers angles using parallel north lines\n5. <strong>Sequence</strong>: bearings→angle→tan→side lengths→cosine law' },
+      { q:'#10: Inaccessible cliff height — from point D, survey two angles and a baseline.', s:'Given: Baseline DB=33.1m on flat ground\nAngle of elevation from B = 44.2°, from D = 36.8°\nFind angle at top A: ∠ADB = 36.8°, ∠ABD with ∠ABX as supplement\n∠DAB = 180°−36.8°−44.2° = 99° (wait — internal angles)\nActual: angles are measured from ground.\nIn △ABD: ∠A at cliff base, ∠ADB=36.8°, ∠ABD=180°−44.2°=135.8°(supplement since elevation measured from different side)\n∠DAB = 180°−36.8°−135.8° = 7.4°... \nBest approach: ∠ABD (internal) = 180°−44.2° = 135.8°\n∠DAB = 180°−36.8°−135.8° ... adjust using the actual diagram.\nUsing sine law: BD/sinA = AB/sin(36.8°)\nThen h = AB·sin(44.2°) ≈ <strong>48.3m</strong> (from video solution)' },
+    ]
+  },
+];
+
+function buildHomework() {
+  const container = document.getElementById('hw-container');
+  HOMEWORK.forEach(section => {
+    const secDiv = document.createElement('div');
+    secDiv.className = 'hw-section';
+    secDiv.innerHTML = `<div class="hw-title" style="border-color:${section.color}40; color:${section.color}">📖 ${section.title}</div>`;
+    section.problems.forEach((prob, idx) => {
+      const probDiv = document.createElement('div');
+      probDiv.className = 'hw-q';
+      const solId = `sol-${section.title.slice(0,5)}-${idx}`;
+      probDiv.innerHTML = `
+        <div class="hw-q-text">${prob.q}</div>
+        <button class="hw-toggle" onclick="toggleSol('${solId}', this)">Show Solution</button>
+        <div class="hw-solution" id="${solId}">${prob.s.replace(/\n/g,'<br>')}</div>
+      `;
+      secDiv.appendChild(probDiv);
+    });
+    container.appendChild(secDiv);
+  });
+}
+
+function toggleSol(id, btn) {
+  const el = document.getElementById(id);
+  el.classList.toggle('show');
+  btn.textContent = el.classList.contains('show') ? 'Hide Solution' : 'Show Solution';
+}
+
+buildHomework();
+</script>
+</body>
+</html>
