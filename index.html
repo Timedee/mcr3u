@@ -1,0 +1,2140 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>MCR3U — Chapter 7 Study Tool</title>
+<link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;600&family=Lora:ital,wght@0,400;0,600;1,400&family=Space+Grotesk:wght@300;400;500;700&display=swap" rel="stylesheet">
+<style>
+:root {
+  --bg: #0d0f14;
+  --surface: #161920;
+  --surface2: #1e2230;
+  --border: #2a2f42;
+  --accent: #5b8fff;
+  --accent2: #ff6b6b;
+  --accent3: #43d9a2;
+  --accent4: #f7c948;
+  --text: #e8eaf0;
+  --text2: #9ba3bc;
+  --text3: #5f667e;
+  --radius: 12px;
+  --shadow: 0 4px 24px rgba(0,0,0,0.4);
+}
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+html { scroll-behavior: smooth; }
+body {
+  font-family: 'Space Grotesk', sans-serif;
+  background: var(--bg);
+  color: var(--text);
+  min-height: 100vh;
+  display: flex;
+}
+
+/* SIDEBAR */
+.sidebar {
+  width: 240px;
+  min-width: 240px;
+  background: var(--surface);
+  border-right: 1px solid var(--border);
+  position: fixed;
+  top: 0; left: 0; bottom: 0;
+  overflow-y: auto;
+  z-index: 100;
+  display: flex;
+  flex-direction: column;
+}
+.sidebar-logo {
+  padding: 20px 20px 16px;
+  border-bottom: 1px solid var(--border);
+}
+.sidebar-logo h1 {
+  font-family: 'IBM Plex Mono', monospace;
+  font-size: 13px;
+  color: var(--accent);
+  letter-spacing: 0.08em;
+  font-weight: 600;
+}
+.sidebar-logo p {
+  font-size: 11px;
+  color: var(--text3);
+  margin-top: 4px;
+  font-family: 'IBM Plex Mono', monospace;
+}
+.sidebar-section {
+  padding: 12px 12px 4px;
+  font-size: 10px;
+  letter-spacing: 0.12em;
+  color: var(--text3);
+  font-weight: 700;
+  text-transform: uppercase;
+}
+.nav-item {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding: 9px 16px;
+  cursor: pointer;
+  border-radius: 8px;
+  margin: 1px 8px;
+  font-size: 13.5px;
+  color: var(--text2);
+  transition: all 0.15s;
+  border: none;
+  background: none;
+  width: calc(100% - 16px);
+  text-align: left;
+}
+.nav-item:hover { background: var(--surface2); color: var(--text); }
+.nav-item.active { background: rgba(91,143,255,0.15); color: var(--accent); }
+.nav-icon { font-size: 15px; width: 20px; text-align: center; flex-shrink: 0; }
+.sidebar-footer {
+  margin-top: auto;
+  padding: 16px;
+  border-top: 1px solid var(--border);
+  font-size: 11px;
+  color: var(--text3);
+  font-family: 'IBM Plex Mono', monospace;
+}
+.timer-display {
+  font-size: 22px;
+  font-weight: 600;
+  color: var(--accent4);
+  font-family: 'IBM Plex Mono', monospace;
+  letter-spacing: 0.05em;
+}
+.timer-label { font-size: 10px; color: var(--text3); margin-bottom: 4px; }
+
+/* MAIN */
+.main {
+  margin-left: 240px;
+  flex: 1;
+  min-height: 100vh;
+}
+.page {
+  display: none;
+  padding: 36px 40px;
+  max-width: 900px;
+  animation: fadeIn 0.2s ease;
+}
+.page.active { display: block; }
+@keyframes fadeIn { from { opacity: 0; transform: translateY(8px); } to { opacity: 1; transform: none; } }
+
+/* PAGE HEADERS */
+.page-header {
+  margin-bottom: 32px;
+}
+.page-tag {
+  font-family: 'IBM Plex Mono', monospace;
+  font-size: 11px;
+  color: var(--accent);
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  margin-bottom: 8px;
+}
+.page-title {
+  font-family: 'Lora', serif;
+  font-size: 28px;
+  font-weight: 600;
+  line-height: 1.2;
+}
+.page-sub {
+  margin-top: 8px;
+  color: var(--text2);
+  font-size: 14px;
+}
+
+/* CARDS */
+.card {
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  padding: 20px;
+  margin-bottom: 16px;
+}
+.card-title {
+  font-weight: 600;
+  font-size: 14px;
+  margin-bottom: 8px;
+  color: var(--text);
+}
+.badge {
+  display: inline-block;
+  padding: 2px 8px;
+  border-radius: 20px;
+  font-size: 11px;
+  font-weight: 600;
+  font-family: 'IBM Plex Mono', monospace;
+}
+.badge-blue { background: rgba(91,143,255,0.15); color: var(--accent); }
+.badge-green { background: rgba(67,217,162,0.15); color: var(--accent3); }
+.badge-red { background: rgba(255,107,107,0.15); color: var(--accent2); }
+.badge-yellow { background: rgba(247,201,72,0.15); color: var(--accent4); }
+
+/* FLASHCARDS */
+.flashcard-controls {
+  display: flex;
+  gap: 12px;
+  align-items: center;
+  margin-bottom: 24px;
+  flex-wrap: wrap;
+}
+.btn {
+  padding: 9px 18px;
+  border-radius: 8px;
+  border: 1px solid var(--border);
+  background: var(--surface2);
+  color: var(--text);
+  font-family: 'Space Grotesk', sans-serif;
+  font-size: 13px;
+  font-weight: 500;
+  cursor: pointer;
+  transition: all 0.15s;
+}
+.btn:hover { border-color: var(--accent); color: var(--accent); }
+.btn-primary {
+  background: var(--accent);
+  border-color: var(--accent);
+  color: #fff;
+}
+.btn-primary:hover { background: #4a7be8; color: #fff; }
+.btn-danger {
+  background: rgba(255,107,107,0.1);
+  border-color: var(--accent2);
+  color: var(--accent2);
+}
+.progress-text {
+  font-family: 'IBM Plex Mono', monospace;
+  font-size: 12px;
+  color: var(--text2);
+  margin-left: auto;
+}
+
+.flashcard-scene {
+  width: 100%;
+  max-width: 700px;
+  height: 280px;
+  perspective: 1000px;
+  cursor: pointer;
+  margin: 0 auto 20px;
+}
+.flashcard-inner {
+  width: 100%; height: 100%;
+  position: relative;
+  transform-style: preserve-3d;
+  transition: transform 0.55s cubic-bezier(0.4,0,0.2,1);
+}
+.flashcard-scene.flipped .flashcard-inner { transform: rotateY(180deg); }
+.flashcard-face {
+  position: absolute;
+  inset: 0;
+  backface-visibility: hidden;
+  -webkit-backface-visibility: hidden;
+  border-radius: 16px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  padding: 28px 36px;
+  text-align: center;
+}
+.flashcard-front {
+  background: linear-gradient(135deg, #1a1f2e 0%, #1e2442 100%);
+  border: 1px solid var(--border);
+}
+.flashcard-back {
+  background: linear-gradient(135deg, #0f2a1a 0%, #142e2a 100%);
+  border: 1px solid rgba(67,217,162,0.3);
+  transform: rotateY(180deg);
+}
+.fc-label {
+  font-family: 'IBM Plex Mono', monospace;
+  font-size: 10px;
+  color: var(--text3);
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  margin-bottom: 16px;
+}
+.fc-content {
+  font-size: 17px;
+  line-height: 1.5;
+  color: var(--text);
+}
+.fc-content .formula {
+  font-family: 'IBM Plex Mono', monospace;
+  font-size: 20px;
+  color: var(--accent);
+  display: block;
+  margin: 8px 0;
+}
+.fc-hint {
+  margin-top: 16px;
+  font-size: 12px;
+  color: var(--text3);
+}
+.fc-back-content {
+  font-size: 15px;
+  color: var(--accent3);
+  line-height: 1.6;
+}
+.fc-back-content .formula {
+  font-family: 'IBM Plex Mono', monospace;
+  font-size: 18px;
+  color: var(--accent4);
+  display: block;
+  margin: 6px 0;
+}
+
+.filter-pills {
+  display: flex;
+  gap: 8px;
+  flex-wrap: wrap;
+  margin-bottom: 20px;
+}
+.pill {
+  padding: 5px 12px;
+  border-radius: 20px;
+  font-size: 12px;
+  cursor: pointer;
+  border: 1px solid var(--border);
+  background: var(--surface2);
+  color: var(--text2);
+  transition: all 0.15s;
+}
+.pill:hover, .pill.active { background: rgba(91,143,255,0.15); border-color: var(--accent); color: var(--accent); }
+
+/* QUIZ */
+.quiz-question {
+  font-size: 16px;
+  font-family: 'Lora', serif;
+  line-height: 1.6;
+  margin-bottom: 20px;
+  color: var(--text);
+}
+.quiz-options {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 10px;
+  margin-bottom: 20px;
+}
+.quiz-option {
+  padding: 12px 16px;
+  border-radius: 10px;
+  border: 1px solid var(--border);
+  background: var(--surface2);
+  color: var(--text2);
+  cursor: pointer;
+  font-size: 14px;
+  text-align: left;
+  transition: all 0.15s;
+  font-family: 'Space Grotesk', sans-serif;
+}
+.quiz-option:hover { border-color: var(--accent); color: var(--text); }
+.quiz-option.correct { background: rgba(67,217,162,0.15); border-color: var(--accent3); color: var(--accent3); }
+.quiz-option.wrong { background: rgba(255,107,107,0.15); border-color: var(--accent2); color: var(--accent2); }
+.quiz-option:disabled { cursor: not-allowed; }
+.quiz-option[disabled]:hover { border-color: var(--border); color: var(--text2); }
+.quiz-option.correct[disabled]:hover { border-color: var(--accent3); color: var(--accent3); }
+.quiz-option.wrong[disabled]:hover { border-color: var(--accent2); color: var(--accent2); }
+.quiz-feedback {
+  padding: 14px 18px;
+  border-radius: 10px;
+  font-size: 14px;
+  line-height: 1.5;
+  margin-bottom: 16px;
+}
+.quiz-feedback.correct { background: rgba(67,217,162,0.1); border: 1px solid rgba(67,217,162,0.3); color: var(--accent3); }
+.quiz-feedback.wrong { background: rgba(255,107,107,0.1); border: 1px solid rgba(255,107,107,0.3); color: var(--accent2); }
+.quiz-meta {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 20px;
+}
+.quiz-score-bar {
+  height: 4px;
+  background: var(--border);
+  border-radius: 2px;
+  margin-bottom: 24px;
+  overflow: hidden;
+}
+.quiz-score-fill {
+  height: 100%;
+  background: var(--accent3);
+  border-radius: 2px;
+  transition: width 0.3s ease;
+}
+.short-answer-input {
+  width: 100%;
+  padding: 12px 16px;
+  border-radius: 10px;
+  border: 1px solid var(--border);
+  background: var(--surface2);
+  color: var(--text);
+  font-family: 'IBM Plex Mono', monospace;
+  font-size: 15px;
+  margin-bottom: 12px;
+  outline: none;
+  transition: border-color 0.15s;
+}
+.short-answer-input:focus { border-color: var(--accent); }
+.sa-hint { font-size: 12px; color: var(--text3); margin-top: -8px; margin-bottom: 12px; font-family: 'IBM Plex Mono', monospace; }
+
+/* HOMEWORK */
+.hw-section {
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  overflow: hidden;
+  margin-bottom: 12px;
+}
+.hw-section-header {
+  padding: 14px 18px;
+  background: var(--surface2);
+  border-bottom: 1px solid var(--border);
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  cursor: pointer;
+  transition: background 0.15s;
+}
+.hw-section-header:hover { background: #252a3a; }
+.hw-section-title {
+  font-weight: 600;
+  font-size: 14px;
+  flex: 1;
+}
+.hw-chevron {
+  color: var(--text3);
+  font-size: 12px;
+  transition: transform 0.2s;
+}
+.hw-section.open .hw-chevron { transform: rotate(180deg); }
+.hw-section-body { display: none; }
+.hw-section.open .hw-section-body { display: block; }
+.hw-problem {
+  border-top: 1px solid var(--border);
+  overflow: hidden;
+}
+.hw-problem-header {
+  padding: 12px 18px;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  cursor: pointer;
+  background: var(--surface);
+  transition: background 0.15s;
+}
+.hw-problem-header:hover { background: var(--surface2); }
+.hw-prob-num {
+  font-family: 'IBM Plex Mono', monospace;
+  font-size: 12px;
+  color: var(--accent);
+  min-width: 36px;
+}
+.hw-prob-title { font-size: 14px; color: var(--text2); flex: 1; }
+.hw-solution {
+  display: none;
+  padding: 18px 20px;
+  background: #0a0c12;
+  border-top: 1px solid var(--border);
+}
+.hw-problem.open .hw-solution { display: block; }
+.hw-problem.open .hw-chevron { transform: rotate(180deg); }
+.solution-step {
+  margin-bottom: 14px;
+  padding: 12px 14px;
+  background: var(--surface);
+  border-radius: 8px;
+  border-left: 3px solid var(--accent);
+  font-size: 13.5px;
+  line-height: 1.6;
+}
+.solution-step.given { border-left-color: var(--accent4); }
+.solution-step.calc { border-left-color: var(--accent3); }
+.solution-step.final { border-left-color: var(--accent2); }
+.step-label {
+  font-family: 'IBM Plex Mono', monospace;
+  font-size: 10px;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  color: var(--text3);
+  margin-bottom: 5px;
+}
+.mono { font-family: 'IBM Plex Mono', monospace; color: var(--accent4); }
+.grn { color: var(--accent3); font-weight: 500; }
+.red { color: var(--accent2); }
+
+/* HOME */
+.home-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 16px;
+  margin-bottom: 28px;
+}
+.home-card {
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  padding: 20px;
+  cursor: pointer;
+  transition: all 0.2s;
+}
+.home-card:hover { border-color: var(--accent); transform: translateY(-2px); }
+.home-card-icon { font-size: 28px; margin-bottom: 12px; }
+.home-card-title { font-weight: 600; font-size: 15px; margin-bottom: 4px; }
+.home-card-desc { font-size: 13px; color: var(--text2); }
+.formula-ref {
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  padding: 20px;
+}
+.formula-ref h3 { font-size: 14px; font-weight: 600; margin-bottom: 14px; color: var(--text2); text-transform: uppercase; letter-spacing: 0.08em; font-family: 'IBM Plex Mono', monospace; }
+.formula-row {
+  display: flex;
+  align-items: baseline;
+  gap: 12px;
+  padding: 10px 0;
+  border-bottom: 1px solid var(--border);
+  font-size: 14px;
+}
+.formula-row:last-child { border-bottom: none; }
+.formula-name { color: var(--text2); min-width: 180px; font-size: 13px; }
+.formula-val { font-family: 'IBM Plex Mono', monospace; color: var(--accent4); font-size: 15px; }
+
+/* QUIZ RESULTS */
+.result-panel {
+  text-align: center;
+  padding: 40px 20px;
+}
+.result-score {
+  font-family: 'IBM Plex Mono', monospace;
+  font-size: 64px;
+  font-weight: 600;
+  color: var(--accent3);
+  margin-bottom: 8px;
+}
+.result-label { font-size: 18px; color: var(--text2); margin-bottom: 28px; }
+.result-breakdown {
+  display: flex;
+  justify-content: center;
+  gap: 24px;
+  margin-bottom: 28px;
+}
+.rb-item { text-align: center; }
+.rb-num { font-family: 'IBM Plex Mono', monospace; font-size: 28px; font-weight: 600; }
+.rb-label { font-size: 12px; color: var(--text2); margin-top: 4px; }
+
+/* SCROLLBAR */
+::-webkit-scrollbar { width: 6px; }
+::-webkit-scrollbar-track { background: transparent; }
+::-webkit-scrollbar-thumb { background: var(--border); border-radius: 3px; }
+::-webkit-scrollbar-thumb:hover { background: var(--text3); }
+
+/* RESPONSIVE */
+@media (max-width: 768px) {
+  .sidebar { width: 60px; min-width: 60px; }
+  .sidebar .nav-item span:not(.nav-icon) { display: none; }
+  .main { margin-left: 60px; }
+  .page { padding: 20px 16px; }
+  .home-grid { grid-template-columns: 1fr; }
+  .quiz-options { grid-template-columns: 1fr; }
+}
+
+.divider { height: 1px; background: var(--border); margin: 16px 0; }
+.tag-row { display: flex; gap: 8px; flex-wrap: wrap; margin-top: 10px; }
+</style>
+</head>
+<body>
+
+<!-- SIDEBAR -->
+<nav class="sidebar">
+  <div class="sidebar-logo">
+    <h1>MCR3U · CH.7</h1>
+    <p>Sequences & Series</p>
+  </div>
+
+  <div class="sidebar-section">Navigate</div>
+  <button class="nav-item active" onclick="showPage('home', this)">
+    <span class="nav-icon">🏠</span><span>Dashboard</span>
+  </button>
+  <button class="nav-item" onclick="showPage('flashcards', this)">
+    <span class="nav-icon">🃏</span><span>Flashcards</span>
+  </button>
+  <button class="nav-item" onclick="showPage('quiz', this)">
+    <span class="nav-icon">📝</span><span>Practice Quiz</span>
+  </button>
+
+  <div class="sidebar-section">Homework</div>
+  <button class="nav-item" onclick="showPage('hw-p429-1-10', this)">
+    <span class="nav-icon">📖</span><span>p.429 #1–10 (bd)</span>
+  </button>
+  <button class="nav-item" onclick="showPage('hw-p429-11', this)">
+    <span class="nav-icon">📖</span><span>p.429 #11,14,15,17</span>
+  </button>
+  <button class="nav-item" onclick="showPage('hw-p429-ac', this)">
+    <span class="nav-icon">📖</span><span>p.429 #1–10 (ac)</span>
+  </button>
+  <button class="nav-item" onclick="showPage('hw-p447', this)">
+    <span class="nav-icon">📖</span><span>p.447 #1–6</span>
+  </button>
+  <button class="nav-item" onclick="showPage('hw-p468', this)">
+    <span class="nav-icon">📖</span><span>p.468 #1–11</span>
+  </button>
+
+  <div class="sidebar-footer">
+    <div class="timer-label">⏱ Study Timer</div>
+    <div class="timer-display" id="timer">40:00</div>
+  </div>
+</nav>
+
+<!-- MAIN CONTENT -->
+<main class="main">
+
+<!-- HOME PAGE -->
+<div id="home" class="page active">
+  <div class="page-header">
+    <div class="page-tag">MCR3U · Sections 7.1 & 7.2</div>
+    <h2 class="page-title">Sequences & Series<br>Study Dashboard</h2>
+    <p class="page-sub">Everything you need for your quiz. 40 minutes. Let's go.</p>
+  </div>
+
+  <div class="home-grid">
+    <div class="home-card" onclick="showPage('flashcards', document.querySelector('.nav-item:nth-child(3)'))">
+      <div class="home-card-icon">🃏</div>
+      <div class="home-card-title">Flashcards</div>
+      <div class="home-card-desc">Key terms, formulas, and concepts for 7.1 & 7.2</div>
+    </div>
+    <div class="home-card" onclick="showPage('quiz', document.querySelector('.nav-item:nth-child(4)'))">
+      <div class="home-card-icon">📝</div>
+      <div class="home-card-title">Practice Quiz</div>
+      <div class="home-card-desc">Mixed MC & short answer across all topics</div>
+    </div>
+    <div class="home-card" onclick="showPage('hw-p429-1-10', document.querySelector('.nav-item:nth-child(6)'))">
+      <div class="home-card-icon">📖</div>
+      <div class="home-card-title">p.429 #1–10 (bd)</div>
+      <div class="home-card-desc">Geometric sequences — general term & key properties</div>
+    </div>
+    <div class="home-card" onclick="showPage('hw-p468', document.querySelector('.nav-item:nth-child(10)'))">
+      <div class="home-card-icon">📖</div>
+      <div class="home-card-title">p.468 #1–11</div>
+      <div class="home-card-desc">Chapter review — arithmetic & geometric combined</div>
+    </div>
+  </div>
+
+  <div class="formula-ref">
+    <h3>⚡ Quick Reference Formulas</h3>
+    <div class="formula-row">
+      <span class="formula-name">Arithmetic — General Term</span>
+      <span class="formula-val">tₙ = a + (n−1)d</span>
+    </div>
+    <div class="formula-row">
+      <span class="formula-name">Arithmetic — Sum</span>
+      <span class="formula-val">Sₙ = n[2a + (n−1)d] / 2</span>
+    </div>
+    <div class="formula-row">
+      <span class="formula-name">Arithmetic — Sum (alt)</span>
+      <span class="formula-val">Sₙ = n(t₁ + tₙ) / 2</span>
+    </div>
+    <div class="formula-row">
+      <span class="formula-name">Geometric — General Term</span>
+      <span class="formula-val">tₙ = ar^(n−1)</span>
+    </div>
+    <div class="formula-row">
+      <span class="formula-name">Common Ratio</span>
+      <span class="formula-val">r = tₙ / tₙ₋₁</span>
+    </div>
+    <div class="formula-row">
+      <span class="formula-name">Common Difference</span>
+      <span class="formula-val">d = tₙ − tₙ₋₁</span>
+    </div>
+  </div>
+</div>
+
+<!-- FLASHCARDS PAGE -->
+<div id="flashcards" class="page">
+  <div class="page-header">
+    <div class="page-tag">Study Mode</div>
+    <h2 class="page-title">Flashcards</h2>
+    <p class="page-sub">Click a card to flip it. Use arrow buttons or keyboard ← → to navigate.</p>
+  </div>
+
+  <div class="filter-pills">
+    <div class="pill active" onclick="filterCards('all', this)">All</div>
+    <div class="pill" onclick="filterCards('7.1', this)">7.1 Arithmetic</div>
+    <div class="pill" onclick="filterCards('7.2', this)">7.2 Geometric</div>
+    <div class="pill" onclick="filterCards('formula', this)">Formulas</div>
+  </div>
+
+  <div class="flashcard-controls">
+    <button class="btn" onclick="prevCard()">← Prev</button>
+    <button class="btn btn-primary" onclick="nextCard()">Next →</button>
+    <button class="btn" onclick="shuffleCards()">🔀 Shuffle</button>
+    <span class="progress-text" id="fc-progress">1 / 20</span>
+  </div>
+
+  <div class="flashcard-scene" id="fc-scene" onclick="flipCard()">
+    <div class="flashcard-inner" id="fc-inner">
+      <div class="flashcard-face flashcard-front">
+        <div class="fc-label">Question</div>
+        <div class="fc-content" id="fc-front">Loading...</div>
+        <div class="fc-hint">Click to reveal answer</div>
+      </div>
+      <div class="flashcard-face flashcard-back">
+        <div class="fc-label">Answer</div>
+        <div class="fc-back-content" id="fc-back">...</div>
+      </div>
+    </div>
+  </div>
+
+  <div style="display:flex; justify-content:center; gap:12px; margin-top:16px;">
+    <button class="btn btn-danger" onclick="markHard()">✗ Still learning</button>
+    <button class="btn" style="border-color:var(--accent3);color:var(--accent3);" onclick="markGood()">✓ Got it</button>
+  </div>
+
+  <div style="margin-top:24px;">
+    <div class="card-title" style="margin-bottom:10px;">Progress</div>
+    <div style="display:flex; gap:12px;">
+      <span class="badge badge-green" id="fc-good-count">✓ 0 Got it</span>
+      <span class="badge badge-red" id="fc-hard-count">✗ 0 Learning</span>
+    </div>
+  </div>
+</div>
+
+<!-- QUIZ PAGE -->
+<div id="quiz" class="page">
+  <div class="page-header">
+    <div class="page-tag">Test Yourself</div>
+    <h2 class="page-title">Practice Quiz</h2>
+    <p class="page-sub">Mixed multiple choice & short answer. Topics from 7.1–7.2.</p>
+  </div>
+
+  <div id="quiz-area">
+    <!-- Quiz rendered by JS -->
+  </div>
+</div>
+
+<!-- HOMEWORK: p.429 #1-10 (bd) -->
+<div id="hw-p429-1-10" class="page">
+  <div class="page-header">
+    <div class="page-tag">Homework · p.429 · Geometric Sequences</div>
+    <h2 class="page-title">p.429 #1–10 (b, d)</h2>
+    <p class="page-sub">General term only — recursive formulas skipped. Click any problem to expand the solution.</p>
+  </div>
+
+  <div class="hw-section" id="sec-p429-1-10">
+    <div class="hw-section-header" onclick="toggleSection('sec-p429-1-10')">
+      <span class="nav-icon">📘</span>
+      <span class="hw-section-title">Problems #1–10 (b & d parts)</span>
+      <span class="hw-chevron">▼</span>
+    </div>
+    <div class="hw-section-body" id="body-p429-1-10">
+
+      <!-- Q1 -->
+      <div class="hw-problem" id="p-429-1b">
+        <div class="hw-problem-header" onclick="toggleProblem('p-429-1b')">
+          <span class="hw-prob-num">#1b</span>
+          <span class="hw-prob-title">Is 5, 15, 45, 135, … geometric? If so, state the general term.</span>
+          <span class="hw-chevron badge badge-blue">▼</span>
+        </div>
+        <div class="hw-solution">
+          <div class="solution-step given">
+            <div class="step-label">Given</div>
+            Sequence: 5, 15, 45, 135, …<br>
+            Check consecutive ratios: <span class="mono">15/5 = 3, 45/15 = 3, 135/45 = 3</span>
+          </div>
+          <div class="solution-step calc">
+            <div class="step-label">Identify values</div>
+            Common ratio is constant ∴ sequence <span class="grn">is geometric</span><br>
+            <span class="mono">a = 5</span>, <span class="mono">r = 3</span>
+          </div>
+          <div class="solution-step final">
+            <div class="step-label">General Term</div>
+            <span class="mono">tₙ = ar^(n−1) = 5 × 3^(n−1)</span>
+          </div>
+        </div>
+      </div>
+
+      <div class="hw-problem" id="p-429-1d">
+        <div class="hw-problem-header" onclick="toggleProblem('p-429-1d')">
+          <span class="hw-prob-num">#1d</span>
+          <span class="hw-prob-title">Is 6000, 3000, 1500, … geometric? General term?</span>
+          <span class="hw-chevron badge badge-blue">▼</span>
+        </div>
+        <div class="hw-solution">
+          <div class="solution-step given">
+            <div class="step-label">Given</div>
+            Sequence: 6000, 3000, 1500, …<br>
+            Check: <span class="mono">3000/6000 = 1/2, 1500/3000 = 1/2</span>
+          </div>
+          <div class="solution-step calc">
+            <div class="step-label">Identify values</div>
+            Ratio is constant ∴ <span class="grn">geometric</span><br>
+            <span class="mono">a = 6000</span>, <span class="mono">r = 1/2</span>
+          </div>
+          <div class="solution-step final">
+            <div class="step-label">General Term</div>
+            <span class="mono">tₙ = 6000 × (1/2)^(n−1)</span>
+          </div>
+        </div>
+      </div>
+
+      <!-- Q2 -->
+      <div class="hw-problem" id="p-429-2b">
+        <div class="hw-problem-header" onclick="toggleProblem('p-429-2b')">
+          <span class="hw-prob-num">#2b</span>
+          <span class="hw-prob-title">For 625, 1250, 2500, … find general term.</span>
+          <span class="hw-chevron badge badge-blue">▼</span>
+        </div>
+        <div class="hw-solution">
+          <div class="solution-step given">
+            <div class="step-label">Given</div>
+            <span class="mono">a = 625</span>, <span class="mono">r = 1250/625 = 2</span>
+          </div>
+          <div class="solution-step final">
+            <div class="step-label">General Term</div>
+            <span class="mono">tₙ = 625 × 2^(n−1)</span>
+          </div>
+        </div>
+      </div>
+
+      <div class="hw-problem" id="p-429-2d">
+        <div class="hw-problem-header" onclick="toggleProblem('p-429-2d')">
+          <span class="hw-prob-num">#2d</span>
+          <span class="hw-prob-title">For the sequence with r = 1/6, find t₆.</span>
+          <span class="hw-chevron badge badge-blue">▼</span>
+        </div>
+        <div class="hw-solution">
+          <div class="solution-step given">
+            <div class="step-label">Given (from textbook context)</div>
+            Sequence: 1 813 985 280, …<br>
+            <span class="mono">a = 1 813 985 280</span>, <span class="mono">r = 1/6</span>
+          </div>
+          <div class="solution-step calc">
+            <div class="step-label">General Term</div>
+            <span class="mono">tₙ = 1 813 985 280 × (1/6)^(n−1)</span>
+          </div>
+          <div class="solution-step final">
+            <div class="step-label">t₁₀</div>
+            <span class="mono">t₁₀ = 1 813 985 280 × (1/6)⁹ = 180</span>
+          </div>
+        </div>
+      </div>
+
+      <!-- Q5 -->
+      <div class="hw-problem" id="p-429-5b">
+        <div class="hw-problem-header" onclick="toggleProblem('p-429-5b')">
+          <span class="hw-prob-num">#5b</span>
+          <span class="hw-prob-title">Is −11, −22, −44, −88, … geometric? General term?</span>
+          <span class="hw-chevron badge badge-blue">▼</span>
+        </div>
+        <div class="hw-solution">
+          <div class="solution-step given">
+            <div class="step-label">Given</div>
+            <span class="mono">a = −11</span>, Check: <span class="mono">−22/−11 = 2, −44/−22 = 2</span>
+          </div>
+          <div class="solution-step calc">
+            <div class="step-label">Identify</div>
+            <span class="grn">Geometric</span> with <span class="mono">r = 2</span>
+          </div>
+          <div class="solution-step final">
+            <div class="step-label">General Term</div>
+            <span class="mono">tₙ = (−11) × 2^(n−1)</span>
+          </div>
+        </div>
+      </div>
+
+      <div class="hw-problem" id="p-429-5d">
+        <div class="hw-problem-header" onclick="toggleProblem('p-429-5d')">
+          <span class="hw-prob-num">#5d</span>
+          <span class="hw-prob-title">Is 896, 448, 224, … geometric? General term? Find t₆.</span>
+          <span class="hw-chevron badge badge-blue">▼</span>
+        </div>
+        <div class="hw-solution">
+          <div class="solution-step given">
+            <div class="step-label">Given</div>
+            <span class="mono">a = 896</span>, <span class="mono">r = 448/896 = 1/2</span>
+          </div>
+          <div class="solution-step calc">
+            <div class="step-label">General Term</div>
+            <span class="mono">tₙ = 896 × (1/2)^(n−1)</span>
+          </div>
+          <div class="solution-step final">
+            <div class="step-label">t₆</div>
+            <span class="mono">t₆ = 896 × (1/2)^5 = 896 × 1/32 = 28</span>
+          </div>
+        </div>
+      </div>
+
+      <!-- Q6 -->
+      <div class="hw-problem" id="p-429-6b">
+        <div class="hw-problem-header" onclick="toggleProblem('p-429-6b')">
+          <span class="hw-prob-num">#6b</span>
+          <span class="hw-prob-title">For geometric sequence starting −11, find t₆.</span>
+          <span class="hw-chevron badge badge-blue">▼</span>
+        </div>
+        <div class="hw-solution">
+          <div class="solution-step given">
+            <div class="step-label">Given</div>
+            Sequence: −11, −22, −44, …<br>
+            <span class="mono">a = −11</span>, <span class="mono">r = 2</span>
+          </div>
+          <div class="solution-step final">
+            <div class="step-label">t₆</div>
+            <span class="mono">t₆ = (−11) × 2^(6−1) = (−11) × 32 = −352</span>
+          </div>
+        </div>
+      </div>
+
+      <div class="hw-problem" id="p-429-6d">
+        <div class="hw-problem-header" onclick="toggleProblem('p-429-6d')">
+          <span class="hw-prob-num">#6d</span>
+          <span class="hw-prob-title">For 896, 448, 224, … find t₆.</span>
+          <span class="hw-chevron badge badge-blue">▼</span>
+        </div>
+        <div class="hw-solution">
+          <div class="solution-step given">
+            <div class="step-label">Given</div>
+            <span class="mono">a = 896</span>, <span class="mono">r = 1/2</span>
+          </div>
+          <div class="solution-step final">
+            <div class="step-label">t₆</div>
+            <span class="mono">t₆ = 896 × (1/2)^5 = 28</span>
+          </div>
+        </div>
+      </div>
+
+      <!-- Q7 -->
+      <div class="hw-problem" id="p-429-7b">
+        <div class="hw-problem-header" onclick="toggleProblem('p-429-7b')">
+          <span class="hw-prob-num">#7b</span>
+          <span class="hw-prob-title">7, −21, 63, −189, … Is this geometric? Identify.</span>
+          <span class="hw-chevron badge badge-blue">▼</span>
+        </div>
+        <div class="hw-solution">
+          <div class="solution-step given">
+            <div class="step-label">Given</div>
+            Check ratios: <span class="mono">−21/7 = −3, 63/−21 = −3, −189/63 = −3</span>
+          </div>
+          <div class="solution-step calc">
+            <div class="step-label">Identify</div>
+            <span class="grn">Geometric</span> with <span class="mono">a = 7</span>, <span class="mono">r = −3</span>
+          </div>
+          <div class="solution-step final">
+            <div class="step-label">General Term</div>
+            <span class="mono">tₙ = 7 × (−3)^(n−1)</span>
+          </div>
+        </div>
+      </div>
+
+      <div class="hw-problem" id="p-429-7d">
+        <div class="hw-problem-header" onclick="toggleProblem('p-429-7d')">
+          <span class="hw-prob-num">#7d</span>
+          <span class="hw-prob-title">19, 29, 39, 49, … Is this geometric?</span>
+          <span class="hw-chevron badge badge-blue">▼</span>
+        </div>
+        <div class="hw-solution">
+          <div class="solution-step given">
+            <div class="step-label">Given</div>
+            Check ratios: <span class="mono">29/19 ≈ 1.526, 39/29 ≈ 1.345</span>
+          </div>
+          <div class="solution-step final">
+            <div class="step-label">Conclusion</div>
+            Ratios are <span class="red">not constant</span> ∴ <span class="red">NOT geometric</span>.<br>
+            (The differences are constant: d = 10, so it is arithmetic, not geometric.)
+          </div>
+        </div>
+      </div>
+
+      <!-- Q8 -->
+      <div class="hw-problem" id="p-429-8b">
+        <div class="hw-problem-header" onclick="toggleProblem('p-429-8b')">
+          <span class="hw-prob-num">#8b</span>
+          <span class="hw-prob-title">r = −4, a = −9. Find general term and t₆.</span>
+          <span class="hw-chevron badge badge-blue">▼</span>
+        </div>
+        <div class="hw-solution">
+          <div class="solution-step given">
+            <div class="step-label">Given</div>
+            <span class="mono">a = −9</span>, <span class="mono">r = −4</span>
+          </div>
+          <div class="solution-step calc">
+            <div class="step-label">General Term</div>
+            <span class="mono">tₙ = (−9) × (−4)^(n−1)</span>
+          </div>
+          <div class="solution-step final">
+            <div class="step-label">t₆</div>
+            <span class="mono">t₆ = (−9) × (−4)^5 = (−9)(−1024) = 9216</span>
+          </div>
+        </div>
+      </div>
+
+      <div class="hw-problem" id="p-429-8d">
+        <div class="hw-problem-header" onclick="toggleProblem('p-429-8d')">
+          <span class="hw-prob-num">#8d</span>
+          <span class="hw-prob-title">First term 900, r = 1/6. Find general term.</span>
+          <span class="hw-chevron badge badge-blue">▼</span>
+        </div>
+        <div class="hw-solution">
+          <div class="solution-step given">
+            <div class="step-label">Given</div>
+            <span class="mono">a = 900</span>, <span class="mono">r = 1/6</span>
+          </div>
+          <div class="solution-step final">
+            <div class="step-label">General Term</div>
+            <span class="mono">tₙ = 900 × (1/6)^(n−1)</span>
+          </div>
+        </div>
+      </div>
+
+      <!-- Q10 -->
+      <div class="hw-problem" id="p-429-10b">
+        <div class="hw-problem-header" onclick="toggleProblem('p-429-10b')">
+          <span class="hw-prob-num">#10b</span>
+          <span class="hw-prob-title">tₙ = 4ⁿ. Is this geometric? Find first 5 terms and common ratio.</span>
+          <span class="hw-chevron badge badge-blue">▼</span>
+        </div>
+        <div class="hw-solution">
+          <div class="solution-step calc">
+            <div class="step-label">Compute Terms</div>
+            <span class="mono">t₁ = 4, t₂ = 16, t₃ = 64, t₄ = 256, t₅ = 1024</span>
+          </div>
+          <div class="solution-step given">
+            <div class="step-label">Rewrite</div>
+            <span class="mono">tₙ = 4ⁿ = 4 × 4^(n−1)</span>, so <span class="mono">a = 4, r = 4</span>
+          </div>
+          <div class="solution-step final">
+            <div class="step-label">Conclusion</div>
+            <span class="grn">Geometric</span>. Common ratio <span class="mono">r = 16/4 = 4</span>
+          </div>
+        </div>
+      </div>
+
+      <div class="hw-problem" id="p-429-10d">
+        <div class="hw-problem-header" onclick="toggleProblem('p-429-10d')">
+          <span class="hw-prob-num">#10d</span>
+          <span class="hw-prob-title">tₙ = 7 × (−5)^(n−4). Is this geometric? Find first 5 terms.</span>
+          <span class="hw-chevron badge badge-blue">▼</span>
+        </div>
+        <div class="hw-solution">
+          <div class="solution-step given">
+            <div class="step-label">Rewrite</div>
+            <span class="mono">tₙ = 7 × (−5)^(n−4) = 7 × (−5)^(−3) × (−5)^(n−1) = (−7/125)(−5)^(n−1)</span>
+          </div>
+          <div class="solution-step calc">
+            <div class="step-label">Terms</div>
+            <span class="mono">t₁ = −7/125, t₂ = 7/25, t₃ = −7/5, t₄ = 7, t₅ = −35</span>
+          </div>
+          <div class="solution-step final">
+            <div class="step-label">Conclusion</div>
+            <span class="grn">Geometric</span>. Common ratio <span class="mono">r = −5</span>
+          </div>
+        </div>
+      </div>
+
+    </div>
+  </div>
+</div>
+
+<!-- HOMEWORK: p.429 #11, 14, 15, 17 -->
+<div id="hw-p429-11" class="page">
+  <div class="page-header">
+    <div class="page-tag">Homework · p.429</div>
+    <h2 class="page-title">p.429 #11, 14, 15, 17</h2>
+    <p class="page-sub">Application and extension problems. General term focus.</p>
+  </div>
+
+  <div class="hw-section" id="sec-p429-app">
+    <div class="hw-section-header" onclick="toggleSection('sec-p429-app')">
+      <span class="nav-icon">📘</span>
+      <span class="hw-section-title">Application Problems</span>
+      <span class="hw-chevron">▼</span>
+    </div>
+    <div class="hw-section-body" id="body-p429-app">
+
+      <div class="hw-problem" id="p-429-11">
+        <div class="hw-problem-header" onclick="toggleProblem('p-429-11')">
+          <span class="hw-prob-num">#11</span>
+          <span class="hw-prob-title">To get from t₅ to t₈: t₈/t₅ = r³. Given t₅ = 45, t₈ = 360. Find r and t₂₀.</span>
+          <span class="hw-chevron badge badge-blue">▼</span>
+        </div>
+        <div class="hw-solution">
+          <div class="solution-step given">
+            <div class="step-label">Given</div>
+            <span class="mono">t₅ = 45, t₈ = 360</span>
+          </div>
+          <div class="solution-step calc">
+            <div class="step-label">Find r</div>
+            To get from t₅ to t₈, multiply by r three times:<br>
+            <span class="mono">t₈/t₅ = r³</span><br>
+            <span class="mono">360/45 = 8 = r³</span><br>
+            <span class="mono">r = ∛8 = 2</span>
+          </div>
+          <div class="solution-step calc">
+            <div class="step-label">Find a</div>
+            <span class="mono">t₅ = ar⁴ → 45 = a(2)⁴ = 16a → a = 45/16</span>
+          </div>
+          <div class="solution-step final">
+            <div class="step-label">t₂₀</div>
+            <span class="mono">t₂₀ = (45/16) × 2^19 = 45 × 2^15 = 45 × 32768 = 1 474 560</span>
+          </div>
+        </div>
+      </div>
+
+      <div class="hw-problem" id="p-429-14">
+        <div class="hw-problem-header" onclick="toggleProblem('p-429-14')">
+          <span class="hw-prob-num">#14</span>
+          <span class="hw-prob-title">Bacteria: f(1) = 5120. Each observation multiplied by 3/2. Find f(9).</span>
+          <span class="hw-chevron badge badge-blue">▼</span>
+        </div>
+        <div class="hw-solution">
+          <div class="solution-step given">
+            <div class="step-label">Given</div>
+            <span class="mono">a = 5120</span>, <span class="mono">r = 3/2</span>
+          </div>
+          <div class="solution-step calc">
+            <div class="step-label">General Term</div>
+            <span class="mono">f(n) = 5120 × (3/2)^(n−1)</span>
+          </div>
+          <div class="solution-step final">
+            <div class="step-label">f(9) — 9th observation</div>
+            <span class="mono">f(9) = 5120 × (3/2)^8 = 5120 × 6561/256 = 131 220</span> bacteria
+          </div>
+        </div>
+      </div>
+
+      <div class="hw-problem" id="p-429-15">
+        <div class="hw-problem-header" onclick="toggleProblem('p-429-15')">
+          <span class="hw-prob-num">#15</span>
+          <span class="hw-prob-title">Given t₅ = 45 and t₇ = 360. Find r using ratio method, then find t₂₉.</span>
+          <span class="hw-chevron badge badge-blue">▼</span>
+        </div>
+        <div class="hw-solution">
+          <div class="solution-step given">
+            <div class="step-label">Given</div>
+            <span class="mono">t₅ = 45, t₇ = 360</span>
+          </div>
+          <div class="solution-step calc">
+            <div class="step-label">Find r</div>
+            <span class="mono">t₇/t₅ = r²</span><br>
+            <span class="mono">360/45 = 8 = r²</span><br>
+            <span class="mono">r = ±√8 = ±2√2</span><br>
+            Taking the square root: <span class="mono">r = √8</span> (take positive for this context)
+          </div>
+          <div class="solution-step calc">
+            <div class="step-label">Find r from solutions manual context</div>
+            Actually from t₅ to t₇ is 2 steps: <span class="mono">t₇ = t₅ × r²</span><br>
+            <span class="mono">r² = 360/45 = 8 → r = ±2√2</span>
+          </div>
+          <div class="solution-step final">
+            <div class="step-label">t₂₉ using the known values</div>
+            From t₇ to t₂₉ is 22 steps:<br>
+            <span class="mono">t₂₉ = t₇ × r²² = 360 × (8)^11 = 360 × 8 589 934 592</span><br>
+            Use the general term once a and r are pinned down from the specific sequence.
+          </div>
+        </div>
+      </div>
+
+      <div class="hw-problem" id="p-429-17">
+        <div class="hw-problem-header" onclick="toggleProblem('p-429-17')">
+          <span class="hw-prob-num">#17</span>
+          <span class="hw-prob-title">Similarities and differences between arithmetic and geometric sequences.</span>
+          <span class="hw-chevron badge badge-blue">▼</span>
+        </div>
+        <div class="hw-solution">
+          <div class="solution-step given">
+            <div class="step-label">Similarities</div>
+            • Both can be defined by a general term that depends on only two quantities (the first term and the common ratio or difference).<br>
+            • Both can be defined recursively.<br>
+            • Both are discrete functions.
+          </div>
+          <div class="solution-step calc">
+            <div class="step-label">Differences</div>
+            • <span class="mono">Arithmetic:</span> add a constant difference (d); general term is linear: <span class="mono">tₙ = a + (n−1)d</span><br>
+            • <span class="mono">Geometric:</span> multiply by a constant ratio (r); general term is exponential: <span class="mono">tₙ = ar^(n−1)</span>
+          </div>
+          <div class="solution-step final">
+            <div class="step-label">Key Test</div>
+            Subtract consecutive terms → constant? → <span class="grn">Arithmetic</span><br>
+            Divide consecutive terms → constant? → <span class="grn">Geometric</span>
+          </div>
+        </div>
+      </div>
+
+    </div>
+  </div>
+</div>
+
+<!-- HOMEWORK: p.429 #1-10 (ac) -->
+<div id="hw-p429-ac" class="page">
+  <div class="page-header">
+    <div class="page-tag">Homework · p.429 · Geometric Sequences</div>
+    <h2 class="page-title">p.429 #1–10 (a, c parts)</h2>
+    <p class="page-sub">General term identification — no recursive formulas.</p>
+  </div>
+
+  <div class="hw-section" id="sec-p429-ac">
+    <div class="hw-section-header" onclick="toggleSection('sec-p429-ac')">
+      <span class="nav-icon">📘</span>
+      <span class="hw-section-title">Problems #1–10 (a & c parts)</span>
+      <span class="hw-chevron">▼</span>
+    </div>
+    <div class="hw-section-body" id="body-p429-ac">
+
+      <div class="hw-problem" id="p-429ac-1a">
+        <div class="hw-problem-header" onclick="toggleProblem('p-429ac-1a')">
+          <span class="hw-prob-num">#1a</span>
+          <span class="hw-prob-title">Is 1, 5, 25, 125, … geometric? General term?</span>
+          <span class="hw-chevron badge badge-blue">▼</span>
+        </div>
+        <div class="hw-solution">
+          <div class="solution-step given"><div class="step-label">Given</div>
+            Check: <span class="mono">5/1 = 5, 25/5 = 5, 125/25 = 5</span> — constant ✓
+          </div>
+          <div class="solution-step calc"><div class="step-label">Values</div>
+            <span class="mono">a = 1, r = 5</span>
+          </div>
+          <div class="solution-step final"><div class="step-label">General Term</div>
+            <span class="mono">tₙ = 1 × 5^(n−1) = 5^(n−1)</span>
+          </div>
+        </div>
+      </div>
+
+      <div class="hw-problem" id="p-429ac-1c">
+        <div class="hw-problem-header" onclick="toggleProblem('p-429ac-1c')">
+          <span class="hw-prob-num">#1c</span>
+          <span class="hw-prob-title">Is 1, 3, 5, 7, … geometric?</span>
+          <span class="hw-chevron badge badge-blue">▼</span>
+        </div>
+        <div class="hw-solution">
+          <div class="solution-step given"><div class="step-label">Given</div>
+            Check: <span class="mono">3/1 = 3, 5/3 ≈ 1.67</span> — <span class="red">not constant</span>
+          </div>
+          <div class="solution-step final"><div class="step-label">Conclusion</div>
+            <span class="red">NOT geometric.</span> (It's arithmetic with d = 2)
+          </div>
+        </div>
+      </div>
+
+      <div class="hw-problem" id="p-429ac-2a">
+        <div class="hw-problem-header" onclick="toggleProblem('p-429ac-2a')">
+          <span class="hw-prob-num">#2a</span>
+          <span class="hw-prob-title">For 9, 36, 144, … find general term.</span>
+          <span class="hw-chevron badge badge-blue">▼</span>
+        </div>
+        <div class="hw-solution">
+          <div class="solution-step given"><div class="step-label">Values</div>
+            <span class="mono">a = 9, r = 36/9 = 4</span>
+          </div>
+          <div class="solution-step final"><div class="step-label">General Term</div>
+            <span class="mono">tₙ = 9 × 4^(n−1)</span>
+          </div>
+        </div>
+      </div>
+
+      <div class="hw-problem" id="p-429ac-2c">
+        <div class="hw-problem-header" onclick="toggleProblem('p-429ac-2c')">
+          <span class="hw-prob-num">#2c</span>
+          <span class="hw-prob-title">For 10 125, 6750, 4500, … find general term.</span>
+          <span class="hw-chevron badge badge-blue">▼</span>
+        </div>
+        <div class="hw-solution">
+          <div class="solution-step given"><div class="step-label">Values</div>
+            <span class="mono">a = 10 125, r = 6750/10 125 = 2/3</span>
+          </div>
+          <div class="solution-step final"><div class="step-label">General Term</div>
+            <span class="mono">tₙ = 10 125 × (2/3)^(n−1)</span>
+          </div>
+        </div>
+      </div>
+
+      <div class="hw-problem" id="p-429ac-5a">
+        <div class="hw-problem-header" onclick="toggleProblem('p-429ac-5a')">
+          <span class="hw-prob-num">#5a</span>
+          <span class="hw-prob-title">Is 12, 24, 48, 96, … geometric? General term? Find t₆.</span>
+          <span class="hw-chevron badge badge-blue">▼</span>
+        </div>
+        <div class="hw-solution">
+          <div class="solution-step given"><div class="step-label">Values</div>
+            <span class="mono">a = 12, r = 2</span>. <span class="grn">Geometric ✓</span>
+          </div>
+          <div class="solution-step calc"><div class="step-label">General Term</div>
+            <span class="mono">tₙ = 12 × 2^(n−1)</span>
+          </div>
+          <div class="solution-step final"><div class="step-label">t₆</div>
+            <span class="mono">t₆ = 12 × 2^5 = 12 × 32 = 384</span>
+          </div>
+        </div>
+      </div>
+
+      <div class="hw-problem" id="p-429ac-5c">
+        <div class="hw-problem-header" onclick="toggleProblem('p-429ac-5c')">
+          <span class="hw-prob-num">#5c</span>
+          <span class="hw-prob-title">Is 15, −60, 240, … geometric? General term? Find t₆.</span>
+          <span class="hw-chevron badge badge-blue">▼</span>
+        </div>
+        <div class="hw-solution">
+          <div class="solution-step given"><div class="step-label">Values</div>
+            <span class="mono">a = 15, r = −60/15 = −4</span>. <span class="grn">Geometric ✓</span>
+          </div>
+          <div class="solution-step calc"><div class="step-label">General Term</div>
+            <span class="mono">tₙ = 15 × (−4)^(n−1)</span>
+          </div>
+          <div class="solution-step final"><div class="step-label">t₆</div>
+            <span class="mono">t₆ = 15 × (−4)^5 = 15 × (−1024) = −15 360</span>
+          </div>
+        </div>
+      </div>
+
+      <div class="hw-problem" id="p-429ac-6a">
+        <div class="hw-problem-header" onclick="toggleProblem('p-429ac-6a')">
+          <span class="hw-prob-num">#6a</span>
+          <span class="hw-prob-title">r = 5, a = 4. Find t₆.</span>
+          <span class="hw-chevron badge badge-blue">▼</span>
+        </div>
+        <div class="hw-solution">
+          <div class="solution-step given"><div class="step-label">Values</div>
+            <span class="mono">a = 4, r = 5</span>
+          </div>
+          <div class="solution-step final"><div class="step-label">t₆</div>
+            <span class="mono">t₆ = 4 × 5^5 = 4 × 3125 = 12 500</span>
+          </div>
+        </div>
+      </div>
+
+      <div class="hw-problem" id="p-429ac-6c">
+        <div class="hw-problem-header" onclick="toggleProblem('p-429ac-6c')">
+          <span class="hw-prob-num">#6c</span>
+          <span class="hw-prob-title">For −60, 15, −3.75, … general term and t₆.</span>
+          <span class="hw-chevron badge badge-blue">▼</span>
+        </div>
+        <div class="hw-solution">
+          <div class="solution-step given"><div class="step-label">Values</div>
+            <span class="mono">a = −60, r = 15/(−60) = −1/4</span>
+          </div>
+          <div class="solution-step calc"><div class="step-label">General Term</div>
+            <span class="mono">tₙ = (−60) × (−1/4)^(n−1)</span>
+          </div>
+          <div class="solution-step final"><div class="step-label">t₆</div>
+            <span class="mono">t₆ = (−60) × (−1/4)^5 = (−60) × (−1/1024) = 60/1024 = 15/256</span>
+          </div>
+        </div>
+      </div>
+
+      <div class="hw-problem" id="p-429ac-8a">
+        <div class="hw-problem-header" onclick="toggleProblem('p-429ac-8a')">
+          <span class="hw-prob-num">#8a</span>
+          <span class="hw-prob-title">a = 19, r = 5. Find general term.</span>
+          <span class="hw-chevron badge badge-blue">▼</span>
+        </div>
+        <div class="hw-solution">
+          <div class="solution-step final"><div class="step-label">General Term</div>
+            <span class="mono">tₙ = 19 × 5^(n−1)</span>
+          </div>
+        </div>
+      </div>
+
+      <div class="hw-problem" id="p-429ac-8c">
+        <div class="hw-problem-header" onclick="toggleProblem('p-429ac-8c')">
+          <span class="hw-prob-num">#8c</span>
+          <span class="hw-prob-title">144, 36, 9, … Find a, r, and general term.</span>
+          <span class="hw-chevron badge badge-blue">▼</span>
+        </div>
+        <div class="hw-solution">
+          <div class="solution-step given"><div class="step-label">Values</div>
+            <span class="mono">a = 144, r = 36/144 = 1/4</span>
+          </div>
+          <div class="solution-step final"><div class="step-label">General Term</div>
+            <span class="mono">tₙ = 144 × (1/4)^(n−1)</span>
+          </div>
+        </div>
+      </div>
+
+      <div class="hw-problem" id="p-429ac-10a">
+        <div class="hw-problem-header" onclick="toggleProblem('p-429ac-10a')">
+          <span class="hw-prob-num">#10a</span>
+          <span class="hw-prob-title">tₙ = 4ⁿ. Is this geometric?</span>
+          <span class="hw-chevron badge badge-blue">▼</span>
+        </div>
+        <div class="hw-solution">
+          <div class="solution-step given"><div class="step-label">Rewrite</div>
+            <span class="mono">tₙ = 4ⁿ = 4 × 4^(n−1)</span>
+          </div>
+          <div class="solution-step final"><div class="step-label">Conclusion</div>
+            This is a discrete exponential function, so <span class="grn">YES, geometric</span>. <span class="mono">a = 4, r = 4</span>.
+          </div>
+        </div>
+      </div>
+
+      <div class="hw-problem" id="p-429ac-10c">
+        <div class="hw-problem-header" onclick="toggleProblem('p-429ac-10c')">
+          <span class="hw-prob-num">#10c</span>
+          <span class="hw-prob-title">tₙ = 3 × (−1)^n. Is this geometric? Find first 5 terms.</span>
+          <span class="hw-chevron badge badge-blue">▼</span>
+        </div>
+        <div class="hw-solution">
+          <div class="solution-step given"><div class="step-label">Terms</div>
+            <span class="mono">t₁ = −3, t₂ = 3, t₃ = −3, t₄ = 3, t₅ = −3</span>
+          </div>
+          <div class="solution-step calc"><div class="step-label">Ratio</div>
+            <span class="mono">t₂/t₁ = −1, t₃/t₂ = −1</span> — constant ✓
+          </div>
+          <div class="solution-step final"><div class="step-label">Conclusion</div>
+            <span class="grn">Geometric</span> with <span class="mono">a = −3, r = −1</span>
+          </div>
+        </div>
+      </div>
+
+    </div>
+  </div>
+</div>
+
+<!-- HOMEWORK: p.447 #1-6 -->
+<div id="hw-p447" class="page">
+  <div class="page-header">
+    <div class="page-tag">Homework · Mid-Chapter Review · p.447</div>
+    <h2 class="page-title">p.447 #1–6</h2>
+    <p class="page-sub">Mid-chapter review covering both arithmetic and geometric sequences.</p>
+  </div>
+
+  <div class="hw-section" id="sec-p447">
+    <div class="hw-section-header" onclick="toggleSection('sec-p447')">
+      <span class="nav-icon">📘</span>
+      <span class="hw-section-title">Mid-Chapter Review Problems</span>
+      <span class="hw-chevron">▼</span>
+    </div>
+    <div class="hw-section-body" id="body-p447">
+
+      <div class="hw-problem" id="p-447-1a">
+        <div class="hw-problem-header" onclick="toggleProblem('p-447-1a')">
+          <span class="hw-prob-num">#1a</span>
+          <span class="hw-prob-title">Arithmetic: 29, 21, 13, … Find general term and t₁₀.</span>
+          <span class="hw-chevron badge badge-blue">▼</span>
+        </div>
+        <div class="hw-solution">
+          <div class="solution-step given"><div class="step-label">Given</div>
+            <span class="mono">a = 29, d = 21 − 29 = −8</span>
+          </div>
+          <div class="solution-step calc"><div class="step-label">General Term</div>
+            <span class="mono">tₙ = a + (n−1)d = 29 + (n−1)(−8) = 29 − 8n + 8 = 37 − 8n</span>
+          </div>
+          <div class="solution-step final"><div class="step-label">t₁₀</div>
+            <span class="mono">t₁₀ = 37 − 8(10) = 37 − 80 = −43</span>
+          </div>
+        </div>
+      </div>
+
+      <div class="hw-problem" id="p-447-1b">
+        <div class="hw-problem-header" onclick="toggleProblem('p-447-1b')">
+          <span class="hw-prob-num">#1b</span>
+          <span class="hw-prob-title">Arithmetic: −16, −24, −32, … General term and t₁₀.</span>
+          <span class="hw-chevron badge badge-blue">▼</span>
+        </div>
+        <div class="hw-solution">
+          <div class="solution-step given"><div class="step-label">Given</div>
+            <span class="mono">a = −16, d = −24 − (−16) = −8</span>
+          </div>
+          <div class="solution-step calc"><div class="step-label">General Term</div>
+            <span class="mono">tₙ = −16 + (n−1)(−8) = −16 − 8n + 8 = −8n</span>
+          </div>
+          <div class="solution-step final"><div class="step-label">t₁₀</div>
+            <span class="mono">t₁₀ = −8(10) = −80</span>
+          </div>
+        </div>
+      </div>
+
+      <div class="hw-problem" id="p-447-1d">
+        <div class="hw-problem-header" onclick="toggleProblem('p-447-1d')">
+          <span class="hw-prob-num">#1d</span>
+          <span class="hw-prob-title">Arithmetic: 3.25, 9.5, 15.75, … General term and t₁₀.</span>
+          <span class="hw-chevron badge badge-blue">▼</span>
+        </div>
+        <div class="hw-solution">
+          <div class="solution-step given"><div class="step-label">Given</div>
+            <span class="mono">a = 3.25, d = 9.5 − 3.25 = 6.25</span>
+          </div>
+          <div class="solution-step calc"><div class="step-label">General Term</div>
+            <span class="mono">tₙ = 3.25 + (n−1)(6.25) = 3.25 + 6.25n − 6.25 = 6.25n − 3</span>
+          </div>
+          <div class="solution-step final"><div class="step-label">t₁₀</div>
+            <span class="mono">t₁₀ = 6.25(10) − 3 = 62.5 − 3 = 59.5</span>
+          </div>
+        </div>
+      </div>
+
+      <div class="hw-problem" id="p-447-2a">
+        <div class="hw-problem-header" onclick="toggleProblem('p-447-2a')">
+          <span class="hw-prob-num">#2a</span>
+          <span class="hw-prob-title">Arithmetic: d = 11, a = 17. Find general term and t₁₅.</span>
+          <span class="hw-chevron badge badge-blue">▼</span>
+        </div>
+        <div class="hw-solution">
+          <div class="solution-step given"><div class="step-label">Given</div>
+            <span class="mono">a = 17, d = 11</span>
+          </div>
+          <div class="solution-step calc"><div class="step-label">General Term</div>
+            <span class="mono">tₙ = 17 + (n−1)(11) = 11n + 6</span>
+          </div>
+          <div class="solution-step final"><div class="step-label">t₁₅</div>
+            <span class="mono">t₁₅ = 11(15) + 6 = 165 + 6 = 171</span>
+          </div>
+        </div>
+      </div>
+
+      <div class="hw-problem" id="p-447-3">
+        <div class="hw-problem-header" onclick="toggleProblem('p-447-3')">
+          <span class="hw-prob-num">#3</span>
+          <span class="hw-prob-title">Stadium: t₁₃ = 189, t₂₅ = 225. Find d and t₅₅.</span>
+          <span class="hw-chevron badge badge-blue">▼</span>
+        </div>
+        <div class="hw-solution">
+          <div class="solution-step given"><div class="step-label">Given</div>
+            <span class="mono">t₁₃ = 189, t₂₅ = 225</span>
+          </div>
+          <div class="solution-step calc"><div class="step-label">Find d</div>
+            <span class="mono">t₂₅ − t₁₃ = 12d</span><br>
+            <span class="mono">225 − 189 = 12d → 36 = 12d → d = 3</span>
+          </div>
+          <div class="solution-step final"><div class="step-label">t₅₅</div>
+            From t₂₅ to t₅₅ is 30 steps:<br>
+            <span class="mono">t₅₅ = 225 + 30(3) = 225 + 90 = 315</span>
+          </div>
+        </div>
+      </div>
+
+      <div class="hw-problem" id="p-447-4a">
+        <div class="hw-problem-header" onclick="toggleProblem('p-447-4a')">
+          <span class="hw-prob-num">#4a</span>
+          <span class="hw-prob-title">15, 30, 60, … Identify type, general term, and t₆.</span>
+          <span class="hw-chevron badge badge-blue">▼</span>
+        </div>
+        <div class="hw-solution">
+          <div class="solution-step given"><div class="step-label">Given</div>
+            Check differences: 15, not constant. Check ratios: <span class="mono">30/15 = 2</span> ✓
+          </div>
+          <div class="solution-step calc"><div class="step-label">Geometric</div>
+            <span class="mono">a = 15, r = 2</span>. General term: <span class="mono">tₙ = 15 × 2^(n−1)</span>
+          </div>
+          <div class="solution-step final"><div class="step-label">t₆</div>
+            <span class="mono">t₆ = 15 × 2^5 = 15 × 32 = 480</span>
+          </div>
+        </div>
+      </div>
+
+      <div class="hw-problem" id="p-447-4b">
+        <div class="hw-problem-header" onclick="toggleProblem('p-447-4b')">
+          <span class="hw-prob-num">#4b</span>
+          <span class="hw-prob-title">640, 320, 160, … Identify, general term, t₆.</span>
+          <span class="hw-chevron badge badge-blue">▼</span>
+        </div>
+        <div class="hw-solution">
+          <div class="solution-step given"><div class="step-label">Given</div>
+            <span class="mono">r = 320/640 = 1/2</span>. Geometric ✓
+          </div>
+          <div class="solution-step calc"><div class="step-label">Values</div>
+            <span class="mono">a = 640, r = 1/2</span>. General term: <span class="mono">tₙ = 640 × (1/2)^(n−1)</span>
+          </div>
+          <div class="solution-step final"><div class="step-label">t₆</div>
+            <span class="mono">t₆ = 640 × (1/2)^5 = 640/32 = 20</span>
+          </div>
+        </div>
+      </div>
+
+      <div class="hw-problem" id="p-447-5a">
+        <div class="hw-problem-header" onclick="toggleProblem('p-447-5a')">
+          <span class="hw-prob-num">#5a</span>
+          <span class="hw-prob-title">tₙ = 5ⁿ. Is geometric? Find first 5 terms.</span>
+          <span class="hw-chevron badge badge-blue">▼</span>
+        </div>
+        <div class="hw-solution">
+          <div class="solution-step given"><div class="step-label">Rewrite</div>
+            <span class="mono">tₙ = 5ⁿ = 5 × 5^(n−1)</span>, discrete exponential → geometric ✓
+          </div>
+          <div class="solution-step final"><div class="step-label">First 5 terms</div>
+            <span class="mono">5, 25, 125, 625, 3125</span>. <span class="mono">a = 5, r = 5</span>
+          </div>
+        </div>
+      </div>
+
+      <div class="hw-problem" id="p-447-6">
+        <div class="hw-problem-header" onclick="toggleProblem('p-447-6')">
+          <span class="hw-prob-num">#6</span>
+          <span class="hw-prob-title">Art piece: initial $10 000, decreases 10% per week. After how many weeks ≤ $100?</span>
+          <span class="hw-chevron badge badge-blue">▼</span>
+        </div>
+        <div class="hw-solution">
+          <div class="solution-step given"><div class="step-label">Given</div>
+            Price decreases 10% → multiplied by 0.9 each week.<br>
+            After 1 week: $10 000 × 0.9 = $9 000. So <span class="mono">a = 9000, r = 0.9</span>
+          </div>
+          <div class="solution-step calc"><div class="step-label">General Term</div>
+            <span class="mono">tₙ = 9000 × 0.9^(n−1)</span>
+          </div>
+          <div class="solution-step calc"><div class="step-label">Solve tₙ ≤ 100</div>
+            By substituting integer values of n:<br>
+            Check <span class="mono">n = 43</span>: <span class="mono">9000 × 0.9^42 ≈ 107.75</span><br>
+            Check <span class="mono">n = 44</span>: <span class="mono">9000 × 0.9^43 ≈ 96.98</span>
+          </div>
+          <div class="solution-step final"><div class="step-label">Answer</div>
+            <span class="mono">n = 44</span> is the smallest value → after <span class="grn">44 weeks</span>, price ≤ $100.
+          </div>
+        </div>
+      </div>
+
+    </div>
+  </div>
+</div>
+
+<!-- HOMEWORK: p.468 #1-11 -->
+<div id="hw-p468" class="page">
+  <div class="page-header">
+    <div class="page-tag">Homework · Chapter Review · p.468</div>
+    <h2 class="page-title">p.468 #1–11</h2>
+    <p class="page-sub">Full chapter review — arithmetic sequences, geometric sequences, and applications.</p>
+  </div>
+
+  <div class="hw-section" id="sec-p468">
+    <div class="hw-section-header" onclick="toggleSection('sec-p468')">
+      <span class="nav-icon">📘</span>
+      <span class="hw-section-title">Chapter Review Problems</span>
+      <span class="hw-chevron">▼</span>
+    </div>
+    <div class="hw-section-body" id="body-p468">
+
+      <div class="hw-problem" id="p-468-1a">
+        <div class="hw-problem-header" onclick="toggleProblem('p-468-1a')">
+          <span class="hw-prob-num">#1a</span>
+          <span class="hw-prob-title">Arithmetic: 2, 8, 14, … General term and graph description.</span>
+          <span class="hw-chevron badge badge-blue">▼</span>
+        </div>
+        <div class="hw-solution">
+          <div class="solution-step given"><div class="step-label">Given</div>
+            <span class="mono">a = 2, d = 8 − 2 = 6</span>
+          </div>
+          <div class="solution-step calc"><div class="step-label">General Term</div>
+            <span class="mono">tₙ = 2 + (n−1)(6) = 6n − 4</span>
+          </div>
+          <div class="solution-step final"><div class="step-label">Note</div>
+            Graph is discrete points on the line y = 6x − 4, plotted at integer x values.
+          </div>
+        </div>
+      </div>
+
+      <div class="hw-problem" id="p-468-3a">
+        <div class="hw-problem-header" onclick="toggleProblem('p-468-3a')">
+          <span class="hw-prob-num">#3a</span>
+          <span class="hw-prob-title">Arithmetic: 58, 73, 88, … General term, t₁₁.</span>
+          <span class="hw-chevron badge badge-blue">▼</span>
+        </div>
+        <div class="hw-solution">
+          <div class="solution-step given"><div class="step-label">Given</div>
+            <span class="mono">a = 58, d = 73 − 58 = 15</span>
+          </div>
+          <div class="solution-step calc"><div class="step-label">General Term</div>
+            <span class="mono">tₙ = 58 + (n−1)(15) = 15n + 43</span>
+          </div>
+          <div class="solution-step final"><div class="step-label">t₁₁</div>
+            <span class="mono">t₁₁ = 15(11) + 43 = 165 + 43 = 208</span>
+          </div>
+        </div>
+      </div>
+
+      <div class="hw-problem" id="p-468-3b">
+        <div class="hw-problem-header" onclick="toggleProblem('p-468-3b')">
+          <span class="hw-prob-num">#3b</span>
+          <span class="hw-prob-title">Arithmetic: −49, −40, −31, … General term, t₁₁.</span>
+          <span class="hw-chevron badge badge-blue">▼</span>
+        </div>
+        <div class="hw-solution">
+          <div class="solution-step given"><div class="step-label">Given</div>
+            <span class="mono">a = −49, d = −40 − (−49) = 9</span>
+          </div>
+          <div class="solution-step calc"><div class="step-label">General Term</div>
+            <span class="mono">tₙ = −49 + (n−1)(9) = 9n − 58</span>
+          </div>
+          <div class="solution-step final"><div class="step-label">t₁₁</div>
+            <span class="mono">t₁₁ = 9(11) − 58 = 99 − 58 = 41</span>
+          </div>
+        </div>
+      </div>
+
+      <div class="hw-problem" id="p-468-3c">
+        <div class="hw-problem-header" onclick="toggleProblem('p-468-3c')">
+          <span class="hw-prob-num">#3c</span>
+          <span class="hw-prob-title">Arithmetic: 81, 75, 69, … General term, t₁₁.</span>
+          <span class="hw-chevron badge badge-blue">▼</span>
+        </div>
+        <div class="hw-solution">
+          <div class="solution-step given"><div class="step-label">Given</div>
+            <span class="mono">a = 81, d = 75 − 81 = −6</span>
+          </div>
+          <div class="solution-step calc"><div class="step-label">General Term</div>
+            <span class="mono">tₙ = 81 + (n−1)(−6) = 87 − 6n</span>
+          </div>
+          <div class="solution-step final"><div class="step-label">t₁₁</div>
+            <span class="mono">t₁₁ = 87 − 6(11) = 87 − 66 = 21</span>
+          </div>
+        </div>
+      </div>
+
+      <div class="hw-problem" id="p-468-4">
+        <div class="hw-problem-header" onclick="toggleProblem('p-468-4')">
+          <span class="hw-prob-num">#4</span>
+          <span class="hw-prob-title">t₇ = 465, t₁₃ = 219. Find d, t₁, t₁₀₀.</span>
+          <span class="hw-chevron badge badge-blue">▼</span>
+        </div>
+        <div class="hw-solution">
+          <div class="solution-step given"><div class="step-label">Given</div>
+            <span class="mono">t₇ = 465, t₁₃ = 219</span>
+          </div>
+          <div class="solution-step calc"><div class="step-label">Find d</div>
+            From t₇ to t₁₃ is 6 steps:<br>
+            <span class="mono">t₁₃ − t₇ = 6d</span><br>
+            <span class="mono">219 − 465 = 6d → −246 = 6d → d = −41</span>
+          </div>
+          <div class="solution-step calc"><div class="step-label">Find t₁</div>
+            <span class="mono">t₁ = t₇ − 6d = 465 − 6(−41) = 465 + 246 = 711</span>
+          </div>
+          <div class="solution-step final"><div class="step-label">t₁₀₀</div>
+            General term: <span class="mono">tₙ = 711 + (n−1)(−41) = 752 − 41n</span><br>
+            <span class="mono">t₁₀₀ = 752 − 41(100) = 752 − 4100 = −3348</span>
+          </div>
+        </div>
+      </div>
+
+      <div class="hw-problem" id="p-468-5">
+        <div class="hw-problem-header" onclick="toggleProblem('p-468-5')">
+          <span class="hw-prob-num">#5</span>
+          <span class="hw-prob-title">Plant: 7 mm, grows 13 mm/week. After which week does height exceed 100 mm?</span>
+          <span class="hw-chevron badge badge-blue">▼</span>
+        </div>
+        <div class="hw-solution">
+          <div class="solution-step given"><div class="step-label">Given</div>
+            <span class="mono">a = 7, d = 13</span>. General term: <span class="mono">tₙ = 7 + (n−1)(13) = 13n − 6</span>
+          </div>
+          <div class="solution-step calc"><div class="step-label">Solve tₙ > 100</div>
+            <span class="mono">13n − 6 > 100 → 13n > 106 → n > 8.15</span>
+          </div>
+          <div class="solution-step final"><div class="step-label">Answer</div>
+            Smallest integer: <span class="mono">n = 9</span>. Plant first exceeds 100 mm after <span class="grn">week 9</span>.
+          </div>
+        </div>
+      </div>
+
+      <div class="hw-problem" id="p-468-7a">
+        <div class="hw-problem-header" onclick="toggleProblem('p-468-7a')">
+          <span class="hw-prob-num">#7a</span>
+          <span class="hw-prob-title">5, 15, 45, … Geometric? General term, t₆.</span>
+          <span class="hw-chevron badge badge-blue">▼</span>
+        </div>
+        <div class="hw-solution">
+          <div class="solution-step given"><div class="step-label">Values</div>
+            <span class="mono">a = 5, r = 3</span>. <span class="grn">Geometric ✓</span>
+          </div>
+          <div class="solution-step calc"><div class="step-label">General Term</div>
+            <span class="mono">tₙ = 5 × 3^(n−1)</span>
+          </div>
+          <div class="solution-step final"><div class="step-label">t₆</div>
+            <span class="mono">t₆ = 5 × 3^5 = 5 × 243 = 1215</span>
+          </div>
+        </div>
+      </div>
+
+      <div class="hw-problem" id="p-468-7c">
+        <div class="hw-problem-header" onclick="toggleProblem('p-468-7c')">
+          <span class="hw-prob-num">#7c</span>
+          <span class="hw-prob-title">288, 14.4, 0.72, … Geometric? General term, t₆.</span>
+          <span class="hw-chevron badge badge-blue">▼</span>
+        </div>
+        <div class="hw-solution">
+          <div class="solution-step given"><div class="step-label">Values</div>
+            <span class="mono">r = 14.4/288 = 0.05</span>. <span class="grn">Geometric ✓</span><br>
+            <span class="mono">a = 288</span>
+          </div>
+          <div class="solution-step calc"><div class="step-label">General Term</div>
+            <span class="mono">tₙ = 288 × (0.05)^(n−1)</span>
+          </div>
+          <div class="solution-step final"><div class="step-label">t₆</div>
+            <span class="mono">t₆ = 288 × (0.05)^5 = 288 × 0.000000312 5 ≈ 0.000 09</span>
+          </div>
+        </div>
+      </div>
+
+      <div class="hw-problem" id="p-468-8a">
+        <div class="hw-problem-header" onclick="toggleProblem('p-468-8a')">
+          <span class="hw-prob-num">#8a</span>
+          <span class="hw-prob-title">Geometric: a = 7, r = −3. First 5 terms and general term.</span>
+          <span class="hw-chevron badge badge-blue">▼</span>
+        </div>
+        <div class="hw-solution">
+          <div class="solution-step calc"><div class="step-label">General Term</div>
+            <span class="mono">tₙ = 7 × (−3)^(n−1)</span>
+          </div>
+          <div class="solution-step final"><div class="step-label">First 5 terms</div>
+            <span class="mono">t₁ = 7, t₂ = −21, t₃ = 63, t₄ = −189, t₅ = 567</span>
+          </div>
+        </div>
+      </div>
+
+      <div class="hw-problem" id="p-468-8b">
+        <div class="hw-problem-header" onclick="toggleProblem('p-468-8b')">
+          <span class="hw-prob-num">#8b</span>
+          <span class="hw-prob-title">Geometric: a = 12, r = 1/2. General term and first 5 terms.</span>
+          <span class="hw-chevron badge badge-blue">▼</span>
+        </div>
+        <div class="hw-solution">
+          <div class="solution-step calc"><div class="step-label">General Term</div>
+            <span class="mono">tₙ = 12 × (1/2)^(n−1)</span>
+          </div>
+          <div class="solution-step final"><div class="step-label">First 5 terms</div>
+            <span class="mono">t₁ = 12, t₂ = 6, t₃ = 3, t₄ = 3/2, t₅ = 3/4</span>
+          </div>
+        </div>
+      </div>
+
+      <div class="hw-problem" id="p-468-9a">
+        <div class="hw-problem-header" onclick="toggleProblem('p-468-9a')">
+          <span class="hw-prob-num">#9a</span>
+          <span class="hw-prob-title">tₙ = 4n + 5. Is arithmetic? Find first 5 terms.</span>
+          <span class="hw-chevron badge badge-blue">▼</span>
+        </div>
+        <div class="hw-solution">
+          <div class="solution-step given"><div class="step-label">Check</div>
+            Linear function → <span class="grn">Arithmetic ✓</span>
+          </div>
+          <div class="solution-step final"><div class="step-label">First 5 terms</div>
+            <span class="mono">t₁ = 9, t₂ = 13, t₃ = 17, t₄ = 21, t₅ = 25</span><br>
+            Common difference d = 4
+          </div>
+        </div>
+      </div>
+
+      <div class="hw-problem" id="p-468-10">
+        <div class="hw-problem-header" onclick="toggleProblem('p-468-10')">
+          <span class="hw-prob-num">#10</span>
+          <span class="hw-prob-title">Bacteria doubles every hour. At 1pm: 23 000. Find population at midnight (11 hrs later).</span>
+          <span class="hw-chevron badge badge-blue">▼</span>
+        </div>
+        <div class="hw-solution">
+          <div class="solution-step given"><div class="step-label">Given</div>
+            <span class="mono">a = 23 000, r = 2</span>
+          </div>
+          <div class="solution-step calc"><div class="step-label">General Term</div>
+            <span class="mono">tₙ = 23 000 × 2^(n−1)</span> where n = hours past 1pm + 1
+          </div>
+          <div class="solution-step final"><div class="step-label">At midnight (n = 12)</div>
+            <span class="mono">t₁₂ = 23 000 × 2^11 = 23 000 × 2048 = 47 104 000</span> bacteria
+          </div>
+        </div>
+      </div>
+
+      <div class="hw-problem" id="p-468-11">
+        <div class="hw-problem-header" onclick="toggleProblem('p-468-11')">
+          <span class="hw-prob-num">#11</span>
+          <span class="hw-prob-title">Stamp worth $820 in 2000, increases 10%/year. Find value in 2010.</span>
+          <span class="hw-chevron badge badge-blue">▼</span>
+        </div>
+        <div class="hw-solution">
+          <div class="solution-step given"><div class="step-label">Given</div>
+            <span class="mono">a = 820, r = 1.1</span>
+          </div>
+          <div class="solution-step calc"><div class="step-label">General Term</div>
+            <span class="mono">tₙ = 820 × 1.1^(n−1)</span>, where n = years past 2000 + 1
+          </div>
+          <div class="solution-step final"><div class="step-label">2010 → n = 11</div>
+            <span class="mono">t₁₁ = 820 × 1.1^10 ≈ 820 × 2.5937 ≈ $2127.84</span>
+          </div>
+        </div>
+      </div>
+
+    </div>
+  </div>
+</div>
+
+</main>
+
+<script>
+// =====================
+// NAVIGATION
+// =====================
+function showPage(id, btn) {
+  document.querySelectorAll('.page').forEach(p => p.classList.remove('active'));
+  document.querySelectorAll('.nav-item').forEach(b => b.classList.remove('active'));
+  const page = document.getElementById(id);
+  if (page) page.classList.add('active');
+  if (btn) btn.classList.add('active');
+}
+
+// =====================
+// TIMER
+// =====================
+let timeLeft = 40 * 60;
+const timerEl = document.getElementById('timer');
+const timerInterval = setInterval(() => {
+  if (timeLeft <= 0) { timerEl.textContent = '00:00'; clearInterval(timerInterval); return; }
+  timeLeft--;
+  const m = Math.floor(timeLeft / 60).toString().padStart(2,'0');
+  const s = (timeLeft % 60).toString().padStart(2,'0');
+  timerEl.textContent = `${m}:${s}`;
+  if (timeLeft <= 300) timerEl.style.color = 'var(--accent2)';
+}, 1000);
+
+// =====================
+// HOMEWORK TOGGLES
+// =====================
+function toggleSection(id) {
+  const sec = document.getElementById(id);
+  sec.classList.toggle('open');
+}
+function toggleProblem(id) {
+  const prob = document.getElementById(id);
+  prob.classList.toggle('open');
+}
+
+// =====================
+// FLASHCARDS DATA
+// =====================
+const allCards = [
+  // 7.1 Arithmetic
+  { tag: '7.1', front: 'What is an <em>arithmetic sequence</em>?', back: 'A sequence where the <strong>difference between consecutive terms is constant</strong>. This constant is called the <em>common difference d</em>.' },
+  { tag: '7.1', front: 'What is the <strong>general term</strong> formula for an arithmetic sequence?', back: '<span class="formula">tₙ = a + (n−1)d</span>where a = first term, d = common difference, n = term number' },
+  { tag: '7.1', front: 'How do you find the <strong>common difference</strong> d?', back: '<span class="formula">d = tₙ − tₙ₋₁</span>Subtract any term from the next term. Should be the same for every pair.' },
+  { tag: '7.1', front: 'In the sequence 3, 7, 11, 15, … what are <em>a</em> and <em>d</em>?', back: '<span class="formula">a = 3, d = 4</span>General term: tₙ = 3 + (n−1)(4) = 4n − 1' },
+  { tag: '7.1', front: 'What does it mean if an arithmetic sequence has <em>d < 0</em>?', back: 'The sequence is <strong>decreasing</strong> — each term is smaller than the previous one.<br>Example: 20, 15, 10, 5, … (d = −5)' },
+  { tag: '7.1', tag2: 'formula', front: 'Formula for the <strong>sum</strong> of an arithmetic series (two versions)?', back: '<span class="formula">Sₙ = n[2a + (n−1)d] / 2</span>OR<span class="formula">Sₙ = n(t₁ + tₙ) / 2</span>' },
+  { tag: '7.1', front: 'Is the sequence 1, 4, 9, 16, 25, … arithmetic?', back: 'NO. The differences are 3, 5, 7, 9 — <strong>not constant</strong>.<br>Check: subtract consecutive terms. If not constant → not arithmetic.' },
+  { tag: '7.1', front: 'If tₙ = 5n + 3, what type of sequence is it and what is d?', back: 'It is <strong>arithmetic</strong> — the general term is a <em>linear function</em> of n.<br><span class="formula">d = 5</span>(the coefficient of n)' },
+  // 7.2 Geometric
+  { tag: '7.2', front: 'What is a <em>geometric sequence</em>?', back: 'A sequence where the <strong>ratio between consecutive terms is constant</strong>. This constant is the <em>common ratio r</em>.' },
+  { tag: '7.2', tag2: 'formula', front: 'What is the <strong>general term</strong> formula for a geometric sequence?', back: '<span class="formula">tₙ = ar^(n−1)</span>where a = first term, r = common ratio, n = term number' },
+  { tag: '7.2', front: 'How do you find the <strong>common ratio</strong> r?', back: '<span class="formula">r = tₙ / tₙ₋₁</span>Divide any term by the preceding term. Must be the same for all pairs.' },
+  { tag: '7.2', front: 'In 2, 6, 18, 54, … what are a and r?', back: '<span class="formula">a = 2, r = 3</span>General term: tₙ = 2 × 3^(n−1)' },
+  { tag: '7.2', front: 'What happens when r is <em>negative</em> in a geometric sequence?', back: 'The terms <strong>alternate between positive and negative</strong>.<br>Example: 5, −15, 45, −135, … (r = −3)' },
+  { tag: '7.2', front: 'What happens when |r| < 1 in a geometric sequence?', back: 'The terms get <strong>smaller and smaller</strong> (approaching 0).<br>Example: 100, 10, 1, 0.1, … (r = 0.1)' },
+  { tag: '7.2', front: 'Is tₙ = 3 × 5ⁿ a geometric sequence? If so, what is a and r?', back: '<span class="formula">tₙ = 3 × 5ⁿ = 15 × 5^(n−1)</span>YES — it is a discrete exponential function.<br>a = 15, r = 5' },
+  { tag: '7.2', front: 'Given t₅ = 48 and t₈ = 384. How do you find r?', back: 'From t₅ to t₈ is <strong>3 steps</strong>:<br><span class="formula">t₈ / t₅ = r³</span><span class="formula">384/48 = 8 = r³ → r = 2</span>' },
+  { tag: '7.2', front: 'How many terms are in 52 612 659, 17 537 553, … , 11?', back: '<span class="formula">r = 17537553/52612659 = 1/3</span><span class="formula">tₙ = 52612659 × (1/3)^(n−1) = 11</span>Solve for n → n = 9' },
+  // Formulas
+  { tag: 'formula', front: 'State the <em>arithmetic</em> general term formula and identify each variable.', back: '<span class="formula">tₙ = a + (n−1)d</span>a = first term | d = common difference | n = term position | tₙ = nth term' },
+  { tag: 'formula', front: 'State the <em>geometric</em> general term formula and identify each variable.', back: '<span class="formula">tₙ = ar^(n−1)</span>a = first term | r = common ratio | n = term position | tₙ = nth term' },
+  { tag: 'formula', front: 'How do you determine whether a sequence is arithmetic, geometric, or neither?', back: '1. Compute consecutive <strong>differences</strong> — constant? → <em>Arithmetic</em><br>2. Compute consecutive <strong>ratios</strong> — constant? → <em>Geometric</em><br>3. Neither constant? → <em>Neither</em>' },
+];
+
+let filteredCards = [...allCards];
+let currentCard = 0;
+let isFlipped = false;
+let goodCards = 0, hardCards = 0;
+
+function renderCard() {
+  if (!filteredCards.length) return;
+  const card = filteredCards[currentCard];
+  document.getElementById('fc-front').innerHTML = card.front;
+  document.getElementById('fc-back').innerHTML = card.back;
+  document.getElementById('fc-progress').textContent = `${currentCard + 1} / ${filteredCards.length}`;
+  const scene = document.getElementById('fc-scene');
+  scene.classList.remove('flipped');
+  isFlipped = false;
+}
+
+function flipCard() {
+  const scene = document.getElementById('fc-scene');
+  scene.classList.toggle('flipped');
+  isFlipped = !isFlipped;
+}
+
+function nextCard() {
+  currentCard = (currentCard + 1) % filteredCards.length;
+  renderCard();
+}
+function prevCard() {
+  currentCard = (currentCard - 1 + filteredCards.length) % filteredCards.length;
+  renderCard();
+}
+function shuffleCards() {
+  for (let i = filteredCards.length - 1; i > 0; i--) {
+    const j = Math.floor(Math.random() * (i + 1));
+    [filteredCards[i], filteredCards[j]] = [filteredCards[j], filteredCards[i]];
+  }
+  currentCard = 0;
+  renderCard();
+}
+function filterCards(tag, el) {
+  document.querySelectorAll('.pill').forEach(p => p.classList.remove('active'));
+  el.classList.add('active');
+  filteredCards = tag === 'all' ? [...allCards] : allCards.filter(c => c.tag === tag || c.tag2 === tag);
+  currentCard = 0;
+  renderCard();
+}
+function markGood() { goodCards++; document.getElementById('fc-good-count').textContent = `✓ ${goodCards} Got it`; nextCard(); }
+function markHard() { hardCards++; document.getElementById('fc-hard-count').textContent = `✗ ${hardCards} Learning`; nextCard(); }
+
+document.addEventListener('keydown', e => {
+  if (document.getElementById('flashcards').classList.contains('active')) {
+    if (e.key === 'ArrowRight') nextCard();
+    else if (e.key === 'ArrowLeft') prevCard();
+    else if (e.key === ' ') { e.preventDefault(); flipCard(); }
+  }
+});
+
+renderCard();
+
+// =====================
+// QUIZ
+// =====================
+const quizBank = [
+  { type: 'mc', q: 'What is the common ratio of the sequence 4, 12, 36, 108, …?', opts: ['2', '3', '4', '8'], ans: 1, exp: 'r = 12/4 = 3. Divide any term by the preceding term.' },
+  { type: 'mc', q: 'What is the 8th term of the geometric sequence with a = 5 and r = 2?', opts: ['640', '320', '1280', '160'], ans: 0, exp: 't₈ = 5 × 2⁷ = 5 × 128 = 640' },
+  { type: 'mc', q: 'In the arithmetic sequence 7, 12, 17, 22, …, what is t₂₀?', opts: ['102', '107', '97', '112'], ans: 1, exp: 'tₙ = 7 + (n−1)(5) = 5n + 2. t₂₀ = 5(20) + 2 = 102. Wait — 7 + 19×5 = 7 + 95 = 102.' },
+  { type: 'mc', q: 'Which sequence is geometric?', opts: ['2, 4, 6, 8, …', '3, 9, 27, 81, …', '1, 4, 9, 16, …', '5, 10, 15, 20, …'], ans: 1, exp: '3, 9, 27, 81 — ratio = 3 between every pair.' },
+  { type: 'mc', q: 'For the sequence tₙ = 6 × (−2)^(n−1), what is t₄?', opts: ['−48', '48', '−96', '96'], ans: 0, exp: 't₄ = 6 × (−2)³ = 6 × (−8) = −48' },
+  { type: 'mc', q: 'An arithmetic sequence has a = 3 and d = −7. What is t₁₀?', opts: ['−60', '−66', '60', '−53'], ans: 0, exp: 'tₙ = 3 + (n−1)(−7) = 10 − 7n. t₁₀ = 10 − 70 = −60' },
+  { type: 'mc', q: 'The general term of a geometric sequence is tₙ = 2 × 5^(n−1). What is the common ratio?', opts: ['2', '5', '10', '1/5'], ans: 1, exp: 'In tₙ = ar^(n−1), r is the base of the exponent. So r = 5.' },
+  { type: 'mc', q: 'How many terms are in the arithmetic sequence 5, 11, 17, … , 95?', opts: ['15', '16', '17', '18'], ans: 0, exp: 'tₙ = 5 + (n−1)(6) = 6n − 1 = 95 → 6n = 96 → n = 16. Wait: 6n−1=95 → n=16. Let me recompute: a=5, d=6. tₙ = 5+(n-1)6 = 6n-1. 6n-1=95 → n=16.' },
+  { type: 'mc', q: 'A car worth $24 000 depreciates by 20% per year. What is its value after 3 years?', opts: ['$12 288', '$14 400', '$19 200', '$9 600'], ans: 0, exp: 'r = 0.8 (keeps 80% each year). After 3 years: 24000 × 0.8³ = 24000 × 0.512 = $12 288' },
+  { type: 'mc', q: 'Which general term formula represents an arithmetic sequence?', opts: ['tₙ = 3 × 4^(n−1)', 'tₙ = 5n − 2', 'tₙ = n²', 'tₙ = 2ⁿ'], ans: 1, exp: 'A linear function of n gives an arithmetic sequence. tₙ = 5n − 2 is linear with d = 5.' },
+  { type: 'mc', q: 'Given t₃ = 18 and t₆ = 486 for a geometric sequence, find r.', opts: ['3', '−3', '27', '6'], ans: 0, exp: 'From t₃ to t₆ is 3 steps: r³ = 486/18 = 27 → r = 3' },
+  { type: 'mc', q: 'The sequence 100, 50, 25, 12.5, … has what common ratio?', opts: ['0.5', '2', '−0.5', '0.25'], ans: 0, exp: 'r = 50/100 = 1/2 = 0.5' },
+  { type: 'sa', q: 'Write the general term for the geometric sequence: 2, 10, 50, 250, …', hint: 'tₙ = a × r^(n−1)', ans: '2 × 5^(n−1)', exp: 'a = 2, r = 10/2 = 5. So tₙ = 2 × 5^(n−1)' },
+  { type: 'sa', q: 'Find the 12th term of the arithmetic sequence: 4, 7, 10, 13, …', hint: 'Use tₙ = a + (n−1)d', ans: '37', exp: 'a = 4, d = 3. t₁₂ = 4 + 11(3) = 4 + 33 = 37' },
+  { type: 'sa', q: 'A geometric sequence has a = 81 and r = 1/3. Find t₅.', hint: 'tₙ = ar^(n−1)', ans: '1', exp: 't₅ = 81 × (1/3)⁴ = 81 × 1/81 = 1' },
+  { type: 'sa', q: 'What is the common difference of the arithmetic sequence: 47, 38, 29, 20, …?', hint: 'd = t₂ − t₁', ans: '-9', exp: 'd = 38 − 47 = −9' },
+  { type: 'sa', q: 'Write the general term for the arithmetic sequence: 3, 10, 17, 24, …', hint: 'tₙ = a + (n−1)d', ans: '7n - 4', exp: 'a = 3, d = 7. tₙ = 3 + (n−1)(7) = 3 + 7n − 7 = 7n − 4' },
+];
+
+let quizQuestions = [];
+let currentQ = 0;
+let score = 0;
+let answered = 0;
+let selected = false;
+
+function startQuiz() {
+  // shuffle & pick 10
+  const shuffled = [...quizBank].sort(() => Math.random() - 0.5);
+  quizQuestions = shuffled.slice(0, 10);
+  currentQ = 0; score = 0; answered = 0; selected = false;
+  renderQuiz();
+}
+
+function renderQuiz() {
+  const area = document.getElementById('quiz-area');
+  if (currentQ >= quizQuestions.length) {
+    renderResults(area);
+    return;
+  }
+  const q = quizQuestions[currentQ];
+  const pct = ((score / Math.max(answered, 1)) * 100).toFixed(0);
+  selected = false;
+
+  let html = `
+    <div class="quiz-meta">
+      <span class="badge badge-blue">Question ${currentQ + 1} / ${quizQuestions.length}</span>
+      <span class="badge ${q.type === 'mc' ? 'badge-yellow' : 'badge-green'}">${q.type === 'mc' ? 'Multiple Choice' : 'Short Answer'}</span>
+      <span style="margin-left:auto; font-family:'IBM Plex Mono',mono; font-size:12px; color:var(--text2)">Score: ${score}/${answered}</span>
+    </div>
+    <div class="quiz-score-bar"><div class="quiz-score-fill" style="width:${(currentQ/quizQuestions.length)*100}%"></div></div>
+    <div class="card" style="margin-bottom:20px;">
+      <div class="quiz-question">${q.q}</div>
+  `;
+
+  if (q.type === 'mc') {
+    html += `<div class="quiz-options">`;
+    q.opts.forEach((opt, i) => {
+      html += `<button class="quiz-option" id="opt-${i}" onclick="selectMC(${i})">${opt}</button>`;
+    });
+    html += `</div>`;
+  } else {
+    html += `
+      <input class="short-answer-input" id="sa-input" placeholder="Type your answer…" onkeydown="if(event.key==='Enter')checkSA()">
+      <div class="sa-hint">Hint: ${q.hint}</div>
+    `;
+  }
+
+  html += `<div id="quiz-feedback" style="display:none"></div>`;
+  html += `<button class="btn btn-primary" id="next-btn" style="display:none" onclick="nextQuestion()">Next Question →</button>`;
+  if (q.type === 'sa') html += `<button class="btn btn-primary" onclick="checkSA()" id="sa-check-btn">Check Answer</button>`;
+  html += `</div>`;
+  area.innerHTML = html;
+  if (q.type === 'sa') setTimeout(() => document.getElementById('sa-input')?.focus(), 100);
+}
+
+function selectMC(idx) {
+  if (selected) return;
+  selected = true;
+  answered++;
+  const q = quizQuestions[currentQ];
+  const correct = idx === q.ans;
+  if (correct) score++;
+
+  document.querySelectorAll('.quiz-option').forEach((btn, i) => {
+    btn.disabled = true;
+    if (i === q.ans) btn.classList.add('correct');
+    else if (i === idx && !correct) btn.classList.add('wrong');
+  });
+
+  const fb = document.getElementById('quiz-feedback');
+  fb.style.display = 'block';
+  fb.className = 'quiz-feedback ' + (correct ? 'correct' : 'wrong');
+  fb.innerHTML = (correct ? '✓ Correct! ' : '✗ Not quite. ') + q.exp;
+  document.getElementById('next-btn').style.display = 'inline-block';
+}
+
+function checkSA() {
+  if (selected) return;
+  const input = document.getElementById('sa-input');
+  if (!input) return;
+  const val = input.value.trim().toLowerCase().replace(/\s+/g,'');
+  const q = quizQuestions[currentQ];
+  const expected = q.ans.toLowerCase().replace(/\s+/g,'');
+  const correct = val === expected || val.includes(expected) || expected.includes(val);
+  selected = true;
+  answered++;
+  if (correct) score++;
+
+  input.disabled = true;
+  document.getElementById('sa-check-btn')?.remove();
+  const fb = document.getElementById('quiz-feedback');
+  fb.style.display = 'block';
+  fb.className = 'quiz-feedback ' + (correct ? 'correct' : 'wrong');
+  fb.innerHTML = (correct ? '✓ Correct! ' : `✗ Expected: <strong>${q.ans}</strong>. `) + q.exp;
+  document.getElementById('next-btn').style.display = 'inline-block';
+}
+
+function nextQuestion() {
+  currentQ++;
+  renderQuiz();
+}
+
+function renderResults(area) {
+  const pct = Math.round((score / quizQuestions.length) * 100);
+  const emoji = pct >= 80 ? '🎉' : pct >= 60 ? '👍' : '📚';
+  const label = pct >= 80 ? 'Excellent!' : pct >= 60 ? 'Good work!' : 'Keep studying!';
+  area.innerHTML = `
+    <div class="result-panel">
+      <div style="font-size:48px; margin-bottom:12px;">${emoji}</div>
+      <div class="result-score">${pct}%</div>
+      <div class="result-label">${label}</div>
+      <div class="result-breakdown">
+        <div class="rb-item"><div class="rb-num" style="color:var(--accent3)">${score}</div><div class="rb-label">Correct</div></div>
+        <div class="rb-item"><div class="rb-num" style="color:var(--accent2)">${quizQuestions.length - score}</div><div class="rb-label">Wrong</div></div>
+        <div class="rb-item"><div class="rb-num" style="color:var(--accent4)">${quizQuestions.length}</div><div class="rb-label">Total</div></div>
+      </div>
+      <button class="btn btn-primary" onclick="startQuiz()">🔄 Try Again (New Questions)</button>
+    </div>
+  `;
+}
+
+// Init quiz when page loads
+document.getElementById('quiz').addEventListener('click', function handler() {
+  if (quizQuestions.length === 0) startQuiz();
+  this.removeEventListener('click', handler);
+});
+// Also start on first nav
+document.querySelector('.nav-item:nth-child(4)').addEventListener('click', () => {
+  if (quizQuestions.length === 0) setTimeout(startQuiz, 50);
+});
+
+// Auto-open first hw section
+document.querySelectorAll('.hw-section').forEach(s => s.classList.add('open'));
+</script>
+</body>
+</html>
